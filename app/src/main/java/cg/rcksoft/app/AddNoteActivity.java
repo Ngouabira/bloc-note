@@ -2,15 +2,25 @@ package cg.rcksoft.app;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
-public class AddNoteActivity extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private Toolbar toolbar;
+    private ImageView save;
+    private ViewGroup note_ly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+        setUpView();
     }
 
     @Override
@@ -33,5 +43,30 @@ public class AddNoteActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUpView(){
+
+        toolbar = (Toolbar)findViewById(R.id.toolbar2);
+        note_ly = (LinearLayout)findViewById(R.id.note_ly_2);
+        save = (ImageView)findViewById(R.id.save);
+
+        note_ly.setOnClickListener(this);
+        save.setOnClickListener(this);
+
+        if(toolbar != null){
+            setSupportActionBar(toolbar);
+        }
+
+        /*rootLayout = findViewById(R.id.root_layout);
+        menuLayout = (ClipRevealFrame) findViewById(R.id.menu_layout);
+        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);*/
+        //centerItem = findViewById(R.id.center_item);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

@@ -47,7 +47,7 @@
             android:gravity="right">
 
             <ImageView
-                android:id="@+id/delete"
+                android:id="@+id/save"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:scaleType="fitXY"
