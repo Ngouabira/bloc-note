@@ -3,9 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cg.rcksoft.app.AddNoteActivity">
+    <!-- AppBar Layout -->
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+        <!-- include toolbar -->
         <include
             android:id="@+id/toolbar2"
             layout="@layout/toolbar_note"/>
+
+    </android.support.design.widget.AppBarLayout>
 
 
 </RelativeLayout>
