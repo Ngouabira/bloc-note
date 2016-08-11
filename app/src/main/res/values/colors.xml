@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="window_background">#FFFFFF</color>
+
+    <color name="primary">#FFC107</color>
+    <color name="primary_dark">#FFEB3B</color>
+    <color name="primary_light">#D7CCC8</color>
+    <color name="accent">#FFC107</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#FFFFFF</color>
+
+    <color name="colorGreen">#3aa935</color>
+
+
+</resources>
