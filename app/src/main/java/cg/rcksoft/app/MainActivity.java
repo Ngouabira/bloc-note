@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -145,13 +146,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 v.setSelected(!v.isSelected());*/
 
-                Note n = new Note();
+                /*Note n = new Note();
                 n.setDateEditNote(new Date());
                 n.setDescription("La deuxieme note ");
                 n.setTitle("The 2");
 
                 ah.getNoteDao().insertInTx(n);
-                setResult(RESULT_OK);
+                setResult(RESULT_OK);*/
+                Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+                startActivity(intent);
 
                 Snackbar.make(toolbar, "INSERT INTO OK ", Snackbar.LENGTH_SHORT).show();
                 break;
