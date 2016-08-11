@@ -1,5 +1,6 @@
 package cg.rcksoft.app;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -58,15 +59,17 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
             setSupportActionBar(toolbar);
         }
 
-        /*rootLayout = findViewById(R.id.root_layout);
-        menuLayout = (ClipRevealFrame) findViewById(R.id.menu_layout);
-        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);*/
-        //centerItem = findViewById(R.id.center_item);
-
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.note_ly_2:{
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //add info to show on main check if content is not empty
+                startActivity(intent);
+                break;
+            }
+        }
     }
 }

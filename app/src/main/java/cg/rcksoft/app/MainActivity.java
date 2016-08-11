@@ -155,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setResult(RESULT_OK);*/
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
                 startActivity(intent);
-
-                Snackbar.make(toolbar, "INSERT INTO OK ", Snackbar.LENGTH_SHORT).show();
                 break;
             }
         }
