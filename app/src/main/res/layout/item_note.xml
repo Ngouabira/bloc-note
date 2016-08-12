@@ -43,8 +43,7 @@
 
             <cg.rcksoft.app.tools.font.RobotoTextView
                 android:id="@+id/card_sous_title"
-                style="@style/TextViewAppearance.Info"
-                android:text="22/07/1991"/>
+                style="@style/TextViewAppearance.Info"/>
 
         </LinearLayout>
 

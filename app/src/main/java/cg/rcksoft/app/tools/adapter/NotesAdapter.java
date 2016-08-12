@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import java.util.List;
 
 import cg.rcksoft.app.R;
+import cg.rcksoft.app.tools.AppConfig;
 import cg.rcksoft.app.tools.font.RobotoTextView;
 import cg.rcksoft.data.Note;
 
@@ -43,7 +44,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         value++;
 
         h.title.setText(data.get(p).getTitle());
-        h.info.setText(data.get(p).getDateEditNote().toString());
+        h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
 
         h.img.setImageResource(color[(value < 3 ? value : 0)]);
 

@@ -3,6 +3,10 @@ package cg.rcksoft.app.tools;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cg.rcksoft.data.DaoMaster;
 import cg.rcksoft.data.DaoSession;
 import cg.rcksoft.data.Event;
@@ -13,7 +17,7 @@ import cg.rcksoft.data.NoteDao;
 /**
  * Created by Ricken BAZOLO on 09/08/2016.
  */
-public class AppDBConfig {
+public class AppConfig {
 
     private static DaoSession daoSession;
     private static DaoMaster.DevOpenHelper helper;
@@ -23,7 +27,7 @@ public class AppDBConfig {
     /**
      * Create data base
      */
-    public AppDBConfig(Context myContex) {
+    public AppConfig(Context myContex) {
 
         helper = new DaoMaster.DevOpenHelper(myContex, "notedb-rcksoft", null);
     }
@@ -78,4 +82,13 @@ public class AppDBConfig {
         return (daoSession.getEventDao());
     }
 
+    /**
+     *
+     * @param date
+     * @return
+     */
+    public static String dateFormat(Date date){
+        SimpleDateFormat simple = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return simple.format(date);
+    }
 }

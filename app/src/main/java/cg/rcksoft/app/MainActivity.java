@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cg.rcksoft.app.tools.AnimatorUtils;
-import cg.rcksoft.app.tools.AppDBConfig;
+import cg.rcksoft.app.tools.AppConfig;
 import cg.rcksoft.app.tools.ClipRevealFrame;
 import cg.rcksoft.app.tools.adapter.NotesAdapter;
 import cg.rcksoft.data.Note;
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewGroup note_ly;
 
     private NoteDao noteDao;
+    private String info;
 
     View rootLayout;
     ClipRevealFrame menuLayout;
@@ -57,10 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
-        new AppDBConfig(getApplicationContext());
+        new AppConfig(getApplicationContext());
 
-        noteDao = (NoteDao) AppDBConfig.getReadableDatabase(Note.class);
-
+        noteDao = (NoteDao) AppConfig.getReadableDatabase(Note.class);
 
         setUpView();
         setUpRecyclerView();
@@ -81,6 +81,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            Intent i = getIntent();
+            info = i.getStringExtra("success");
+
+            if(!info.isEmpty()){
+            Snackbar.make(toolbar, "Note: "+info+" ajouté", Snackbar.LENGTH_LONG).show();
+            }
+        }
     }
 
     private void setUpView(){
@@ -122,28 +139,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.fab:{
-
-               /* int x = (v.getLeft() + v.getRight()) / 2;
-                int y = (v.getTop() + v.getBottom()) / 2;
-                float radiusOfFab = 1f * v.getWidth() / 2f;
-                float radiusFromFabToRoot = (float) Math.hypot(
-                        Math.max(x, rootLayout.getWidth() - x),
-                        Math.max(y, rootLayout.getHeight() - y));
-
-                if (v.isSelected()) {
-                    hideMenu(x, y, radiusFromFabToRoot, radiusOfFab);
-                } else {
-                    showMenu(x, y, radiusOfFab, radiusFromFabToRoot);
-                }
-                v.setSelected(!v.isSelected());*/
-
-                /*Note n = new Note();
-                n.setDateEditNote(new Date());
-                n.setDescription("La deuxieme note ");
-                n.setTitle("The 2");
-
-                ah.getNoteDao().insertInTx(n);
-                setResult(RESULT_OK);*/
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
                 startActivity(intent);
                 break;
