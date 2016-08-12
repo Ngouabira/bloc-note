@@ -1,6 +1,7 @@
 package cg.rcksoft.app;
 
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +37,12 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         noteDao = (NoteDao) AppConfig.getReadableDatabase(Note.class);
 
         setUpView();
+
+        Bundle bd = getIntent().getExtras();
+
+        if(bd.getString("message") != null){
+            Snackbar.make(toolbar, bd.getString("message"), Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
