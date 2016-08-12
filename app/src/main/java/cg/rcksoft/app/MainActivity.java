@@ -135,11 +135,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.note_ly:{
-                Snackbar.make(toolbar, "Note: ", Snackbar.LENGTH_SHORT).show();
+                finish();
                 break;
             }
             case R.id.fab:{
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+                intent.putExtra("message", "Créer une note");
                 startActivity(intent);
                 break;
             }
