@@ -1,4 +1,4 @@
-package cg.rcksoft.app.tools.adapter;
+package cg.rcksoft.views.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,13 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-
 import java.util.List;
 
 import cg.rcksoft.app.R;
-import cg.rcksoft.app.tools.AppConfig;
-import cg.rcksoft.app.tools.font.RobotoTextView;
+import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
+import cg.rcksoft.utils.font.RobotoTextView;
 
 /**
  * Created by RICKEN on 21/06/2016.

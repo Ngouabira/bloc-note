@@ -1,4 +1,4 @@
-package cg.rcksoft.app.tools.font;
+package cg.rcksoft.utils.font;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,26 +27,6 @@ public class RobotoTextView extends TextView {
 		super(context, attrs, defStyle);
 		if (isInEditMode()) return;
 		parseAttributes(attrs);
-	}
-	
-	private void parseAttributes(AttributeSet attrs) {
-		int typeface;
-		if (attrs == null) { //Not created from xml
-			typeface = Roboto.ROBOTO_REGULAR;
-		} else {
-		    TypedArray values = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
-		    typeface = values.getInt(R.styleable.RobotoTextView_typeface, Roboto.ROBOTO_REGULAR);
-		    values.recycle();
-		}
-	    setTypeface(getRoboto(typeface));
-	}
-	
-	public void setRobotoTypeface(int typeface) {
-	    setTypeface(getRoboto(typeface));
-	}
-	
-	private Typeface getRoboto(int typeface) {
-		return getRoboto(getContext(), typeface);
 	}
 	
 	public static Typeface getRoboto(Context context, int typeface) {
@@ -133,6 +113,26 @@ public class RobotoTextView extends TextView {
 			}
 			return Roboto.sRobotoThinItalic;
 		}
+	}
+
+	private void parseAttributes(AttributeSet attrs) {
+		int typeface;
+		if (attrs == null) { //Not created from xml
+			typeface = Roboto.ROBOTO_REGULAR;
+		} else {
+			TypedArray values = getContext().obtainStyledAttributes(attrs, R.styleable.RobotoTextView);
+			typeface = values.getInt(R.styleable.RobotoTextView_typeface, Roboto.ROBOTO_REGULAR);
+			values.recycle();
+		}
+		setTypeface(getRoboto(typeface));
+	}
+
+	public void setRobotoTypeface(int typeface) {
+		setTypeface(getRoboto(typeface));
+	}
+
+	private Typeface getRoboto(int typeface) {
+		return getRoboto(getContext(), typeface);
 	}
 	
 	public static class Roboto {

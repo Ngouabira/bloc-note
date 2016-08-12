@@ -1,18 +1,10 @@
-package cg.rcksoft.app.tools;
+package cg.rcksoft.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import cg.rcksoft.data.DaoMaster;
-import cg.rcksoft.data.DaoSession;
-import cg.rcksoft.data.Event;
-import cg.rcksoft.data.EventDao;
-import cg.rcksoft.data.Note;
-import cg.rcksoft.data.NoteDao;
 
 /**
  * Created by Ricken BAZOLO on 09/08/2016.

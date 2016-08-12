@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/window_background"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
-    tools:context=".MainActivity">
+    tools:context="cg.rcksoft.activities.MainActivity"
+    tools:openDrawer="start">
 
     <!-- Coordinator Layout -->
     <android.support.design.widget.CoordinatorLayout
@@ -31,10 +31,10 @@
         <include
             android:id="@+id/recycler"
             layout="@layout/recycler_view"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp" />
 
         <include
             android:id="@+id/fab"

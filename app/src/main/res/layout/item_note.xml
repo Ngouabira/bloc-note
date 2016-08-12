@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardview_note"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     app:cardCornerRadius="2dp"
-    app:cardElevation="4dp"
-    android:id="@+id/cardview_note">
+    app:cardElevation="4dp">
 
 <com.balysv.materialripple.MaterialRippleLayout
     android:id="@+id/material_ly"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="10dp"
     app:mrl_rippleAlpha="0.1"
-    app:mrl_rippleOverlay="false"
-    android:padding="10dp">
+    app:mrl_rippleOverlay="false">
 
     <RelativeLayout
         android:id="@+id/card_ly"
@@ -30,21 +30,22 @@
 
         <LinearLayout
             android:id="@+id/card_ly_text"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@id/card_img"
-            android:layout_toRightOf="@id/card_img">
+            android:layout_toRightOf="@id/card_img"
+            android:orientation="vertical">
 
-            <cg.rcksoft.app.tools.font.RobotoTextView
+            <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_title"
                 style="@style/TextViewAppearance.Title"/>
 
-            <cg.rcksoft.app.tools.font.RobotoTextView
+            <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_content"
-                style="@style/TextViewAppearance.SousTitle"/>
+                style="@style/TextViewAppearance.SousTitle"
+                android:maxLength="13" />
 
-            <cg.rcksoft.app.tools.font.RobotoTextView
+            <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_sous_title"
                 style="@style/TextViewAppearance.Info"/>
 

@@ -1,4 +1,4 @@
-package cg.rcksoft.app;
+package cg.rcksoft.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,10 +6,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -28,29 +28,28 @@ import com.ogaclejapan.arclayout.ArcLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import cg.rcksoft.app.tools.AnimatorUtils;
-import cg.rcksoft.app.tools.AppConfig;
-import cg.rcksoft.app.tools.ClipRevealFrame;
-import cg.rcksoft.app.tools.adapter.NotesAdapter;
+import cg.rcksoft.app.R;
+import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
+import cg.rcksoft.utils.AnimatorUtils;
+import cg.rcksoft.utils.ClipRevealFrame;
+import cg.rcksoft.views.adapters.NotesAdapter;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    View rootLayout;
+    ClipRevealFrame menuLayout;
+    ArcLayout arcLayout;
+    View centerItem;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private FloatingActionButton fab;
     private ImageView delete;
     private ViewGroup note_ly;
-
     private NoteDao noteDao;
     private String info;
-
-    View rootLayout;
-    ClipRevealFrame menuLayout;
-    ArcLayout arcLayout;
-    View centerItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,9 +1,9 @@
-package cg.rcksoft.app;
+package cg.rcksoft.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +15,8 @@ import android.widget.LinearLayout;
 
 import java.util.Date;
 
-import cg.rcksoft.app.tools.AppConfig;
+import cg.rcksoft.app.R;
+import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
 

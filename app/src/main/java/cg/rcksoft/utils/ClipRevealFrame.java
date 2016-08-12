@@ -1,4 +1,4 @@
-package cg.rcksoft.app.tools;
+package cg.rcksoft.utils;
 
 import android.content.Context;
 import android.graphics.Canvas;
