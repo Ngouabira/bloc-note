@@ -90,14 +90,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode == RESULT_OK){
+        /*if(resultCode == RESULT_OK){
             Intent i = getIntent();
             info = i.getStringExtra("success");
 
             if(!info.isEmpty()){
             Snackbar.make(toolbar, "Note: "+info+" ajouté", Snackbar.LENGTH_LONG).show();
             }
-        }
+        }*/
     }
 
     private void setUpView(){
