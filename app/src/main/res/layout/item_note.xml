@@ -42,6 +42,7 @@
 
             <cg.rcksoft.app.tools.font.RobotoTextView
                 android:id="@+id/card_content"
+                android:maxLength="13"
                 style="@style/TextViewAppearance.SousTitle"/>
 
             <cg.rcksoft.app.tools.font.RobotoTextView
