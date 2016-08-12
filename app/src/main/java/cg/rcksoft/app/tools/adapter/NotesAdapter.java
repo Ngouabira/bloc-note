@@ -45,6 +45,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         h.title.setText(data.get(p).getTitle());
         h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
+        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<vide>" : data.get(p).getDescription()));
 
         h.img.setImageResource(color[(value < 3 ? value : 0)]);
 
@@ -67,12 +68,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         ImageView img;
         RobotoTextView title;
         RobotoTextView info;
+        RobotoTextView content;
 
         public NotesViewHolder(View itemView) {
             super(itemView);
             img = (ImageView) itemView.findViewById(R.id.card_img);
             title = (RobotoTextView) itemView.findViewById(R.id.card_title);
             info = (RobotoTextView) itemView.findViewById(R.id.card_sous_title);
+            content = (RobotoTextView) itemView.findViewById(R.id.card_content);
 
         }
 
@@ -87,4 +90,5 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         }
     }
+
 }
