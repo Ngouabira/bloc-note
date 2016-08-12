@@ -103,6 +103,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.note_ly_2:{
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             }
             case R.id.save:{
@@ -110,7 +111,8 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                     addNote();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     intent.putExtra("success", getNote().getTitle());
-                    startActivityForResult(intent, RESULT_OK);
+                    startActivity(intent);
+                    finish();
                     break;
                 }
 
