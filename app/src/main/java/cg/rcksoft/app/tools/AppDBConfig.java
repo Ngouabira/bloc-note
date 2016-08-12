@@ -13,19 +13,17 @@ import cg.rcksoft.data.NoteDao;
 /**
  * Created by Ricken BAZOLO on 09/08/2016.
  */
-public class AppHelper {
+public class AppDBConfig {
 
-    private DaoSession daoSession;
-    //private NoteDao noteDao;
-    //private EventDao eventDao;
-    private DaoMaster.DevOpenHelper helper;
+    private static DaoSession daoSession;
+    private static DaoMaster.DevOpenHelper helper;
     Context myContex;
 
 
     /**
      * Create data base
      */
-    public AppHelper(Context myContex) {
+    public AppDBConfig(Context myContex) {
 
         helper = new DaoMaster.DevOpenHelper(myContex, "notedb-rcksoft", null);
     }
@@ -33,7 +31,7 @@ public class AppHelper {
     /**
      *
      */
-    public Object getWritableDatabase(Class<?> obj){
+    public static Object getWritableDatabase(Class<?> obj){
         Object object = null;
         SQLiteDatabase db = helper.getWritableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -50,7 +48,7 @@ public class AppHelper {
     /**
      *
      */
-    public Object getReadableDatabase(Class<?> obj){
+    public static Object getReadableDatabase(Class<?> obj){
         Object object = null;
         SQLiteDatabase db = helper.getReadableDatabase();
         DaoMaster daoMaster = new DaoMaster(db);
@@ -68,7 +66,7 @@ public class AppHelper {
      * To Manage Entity Note
      * @return
      */
-    private NoteDao getNoteDao(){
+    private static NoteDao getNoteDao(){
         return (daoSession.getNoteDao());
     }
 
@@ -76,7 +74,7 @@ public class AppHelper {
      * To Manage Entity Event
      * @return
      */
-    private EventDao getEventDao(){
+    private static EventDao getEventDao(){
         return (daoSession.getEventDao());
     }
 

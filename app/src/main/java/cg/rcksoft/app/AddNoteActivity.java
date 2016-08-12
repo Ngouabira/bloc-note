@@ -11,34 +11,42 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import cg.rcksoft.app.tools.AppDBConfig;
+import cg.rcksoft.data.Note;
+import cg.rcksoft.data.NoteDao;
+
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Toolbar toolbar;
     private ImageView save;
     private ViewGroup note_ly;
 
+    private NoteDao noteDao;
+
+    //handler bd
+    private AppDBConfig ah;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+
+        ah = new AppDBConfig(getApplicationContext());
+        noteDao = (NoteDao) ah.getReadableDatabase(Note.class);
+
         setUpView();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_add_note, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -66,7 +74,6 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.note_ly_2:{
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                //add info to show on main check if content is not empty
                 startActivity(intent);
                 break;
             }

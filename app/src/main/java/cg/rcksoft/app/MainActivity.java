@@ -26,11 +26,10 @@ import android.widget.LinearLayout;
 import com.ogaclejapan.arclayout.ArcLayout;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import cg.rcksoft.app.tools.AnimatorUtils;
-import cg.rcksoft.app.tools.AppHelper;
+import cg.rcksoft.app.tools.AppDBConfig;
 import cg.rcksoft.app.tools.ClipRevealFrame;
 import cg.rcksoft.app.tools.adapter.NotesAdapter;
 import cg.rcksoft.data.Note;
@@ -52,17 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     ArcLayout arcLayout;
     View centerItem;
 
-    //handler bd
-    private AppHelper ah;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
 
-        ah = new AppHelper(getApplicationContext());
-        noteDao = (NoteDao) ah.getReadableDatabase(Note.class);
+        new AppDBConfig(getApplicationContext());
+
+        noteDao = (NoteDao) AppDBConfig.getReadableDatabase(Note.class);
 
 
         setUpView();
