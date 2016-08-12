@@ -38,8 +38,11 @@
 
             <cg.rcksoft.app.tools.font.RobotoTextView
                 android:id="@+id/card_title"
-                style="@style/TextViewAppearance.Title"
-                android:text="Bonjour"/>
+                style="@style/TextViewAppearance.Title"/>
+
+            <cg.rcksoft.app.tools.font.RobotoTextView
+                android:id="@+id/card_content"
+                style="@style/TextViewAppearance.SousTitle"/>
 
             <cg.rcksoft.app.tools.font.RobotoTextView
                 android:id="@+id/card_sous_title"
