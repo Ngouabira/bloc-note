@@ -25,6 +25,13 @@ public class Note {
         this.dateEditNote = dateEditNote;
     }
 
+    /**
+     * get new instance
+     */
+    public static void newInstance(){
+        new Note();
+    }
+
     public Long getId() {
         return id;
     }

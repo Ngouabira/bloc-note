@@ -34,6 +34,7 @@ import cg.rcksoft.app.tools.AppHelper;
 import cg.rcksoft.app.tools.ClipRevealFrame;
 import cg.rcksoft.app.tools.adapter.NotesAdapter;
 import cg.rcksoft.data.Note;
+import cg.rcksoft.data.NoteDao;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -43,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton fab;
     private ImageView delete;
     private ViewGroup note_ly;
+
+    private NoteDao noteDao;
 
     View rootLayout;
     ClipRevealFrame menuLayout;
@@ -59,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         ah = new AppHelper(getApplicationContext());
+        noteDao = (NoteDao) ah.getReadableDatabase(Note.class);
+
 
         setUpView();
         setUpRecyclerView();
@@ -66,19 +71,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
@@ -102,18 +102,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             setSupportActionBar(toolbar);
         }
 
-        /*rootLayout = findViewById(R.id.root_layout);
-        menuLayout = (ClipRevealFrame) findViewById(R.id.menu_layout);
-        arcLayout = (ArcLayout) findViewById(R.id.arc_layout);*/
-        //centerItem = findViewById(R.id.center_item);
-
     }
 
     private void setUpRecyclerView(){
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        adapter = new NotesAdapter(getApplicationContext(), ah.getNoteDao().loadAll());
+        adapter = new NotesAdapter(getApplicationContext(), noteDao.loadAll());
 
         recyclerView.setAdapter(adapter);
     }
@@ -126,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             }
             case R.id.note_ly:{
-                //List<Note> n = ah.getNoteDao().loadAll();
                 Snackbar.make(toolbar, "Note: ", Snackbar.LENGTH_SHORT).show();
                 break;
             }
