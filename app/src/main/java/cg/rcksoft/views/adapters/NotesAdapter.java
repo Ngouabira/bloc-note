@@ -22,8 +22,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     Context myContext;
     List<Note> data;
-    int[] color = {R.drawable.bar_bleue, R.drawable.bar_green,
-            R.drawable.bar_orange, R.drawable.bar_red, R.drawable.bar_orange};
+    int[] color = {R.drawable.bar_bleue, R.drawable.bar_yelow,
+            R.drawable.bar_orange, R.drawable.bar_red, R.drawable.bar_green};
     int value;
 
     public NotesAdapter(Context myContext, List<Note> data) {
@@ -54,12 +54,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_200));
         }
 
-        //Attach random bar to card
-        h.img.setImageResource(color[((int) (Math.random() * color.length))]);
-
-        if( value == 2){
-            value = -1;
+        if (value >= color.length) {
+            value = 0;
         }
+
+        //Attach random bar to card
+        h.img.setImageResource(color[value]);
+
 
     }
 
