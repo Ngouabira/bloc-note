@@ -43,9 +43,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         value++;
 
-        h.title.setText(data.get(p).getTitle());
+        h.title.setText(data.get(p).getTitle().trim().isEmpty() ? "<Pas de titre>" : data.get(p).getTitle());
         h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
-        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<vide>" : data.get(p).getDescription()));
+        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<Accun contenu>" : data.get(p).getDescription()));
 
         //Change card view color
         if (p % 2 == 0) {

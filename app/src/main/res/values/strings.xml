@@ -15,4 +15,6 @@
     <string name="title_activity_add_note">AddNoteActivity</string>
     <string name="hint_title">Entrer un titre</string>
     <string name="hint_content">Entrer votre note ici</string>
+    <string name="hint_date_alert">22/07/2017</string>
+    <string name="hint_hour_alert">00h:00</string>
 </resources>

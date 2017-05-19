@@ -18,48 +18,159 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_above="@+id/cardview_note_alarm"
+        android:layout_marginBottom="20dp"
+        android:src="@drawable/logo" />
+
     <android.support.v7.widget.CardView
-        android:id="@+id/cardview_note_title"
+        android:id="@+id/cardview_note_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/app_bar2"
-        android:layout_marginTop="15dp"
+        android:layout_centerVertical="true"
         app:cardCornerRadius="10dp"
         app:cardElevation="8dp">
 
-        <EditText
-            android:id="@+id/edit_note_title"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_title"
-            android:inputType="text" />
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ly_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical"
+                tools:ignore="UselessLeaf">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fl_btn_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        app:fabSize="mini" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/dates"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="@string/hint_date_alert"
+                        tools:ignore="Deprecated" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/fl_btn_hour"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="10dp"
+                        android:clickable="true"
+                        app:fabSize="mini" />
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/hour"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:editable="false"
+                        android:hint="@string/hint_hour_alert"
+                        tools:ignore="Deprecated" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_bar"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/ly_alert"
+                android:background="@color/accent" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/ly_alert"
+                android:layout_margin="5dp"
+                tools:ignore="RtlHardcoded" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ly_alert"
+                android:layout_margin="5dp"
+                android:text="Configurer une alert pour votre note --->" />
+
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardview_note_edit"
+            android:id="@+id/cardview_note_title"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/note_ly_edit"
+            android:layout_marginBottom="5dp"
             app:cardCornerRadius="10dp"
             app:cardElevation="8dp">
 
             <EditText
-                android:id="@+id/edit_note"
+                android:id="@+id/edit_note_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
-                android:hint="@string/hint_content"
-                android:inputType="textMultiLine" />
-
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_title"
+                android:inputType="text" />
         </android.support.v7.widget.CardView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/note_ly_edit"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardview_note_edit"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="8dp">
+
+                <EditText
+                    android:id="@+id/edit_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="start"
+                    android:hint="@string/hint_content"
+                    android:inputType="textMultiLine" />
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
