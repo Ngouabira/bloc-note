@@ -14,5 +14,5 @@
 
     <string name="title_activity_add_note">AddNoteActivity</string>
     <string name="hint_title">Entrer un titre</string>
-    <string name="hint_content">Entrer votre text ici</string>
+    <string name="hint_content">Entrer votre note ici</string>
 </resources>
