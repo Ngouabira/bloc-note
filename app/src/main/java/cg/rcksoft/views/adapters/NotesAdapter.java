@@ -1,6 +1,7 @@
 package cg.rcksoft.views.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +22,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     Context myContext;
     List<Note> data;
-    int[] color = {R.drawable.vert, R.drawable.jaune,
-            R.drawable.rouge};
+    int[] color = {R.drawable.bar_bleue, R.drawable.bar_green,
+            R.drawable.bar_orange, R.drawable.bar_red, R.drawable.bar_orange};
     int value;
 
     public NotesAdapter(Context myContext, List<Note> data) {
@@ -46,7 +47,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
         h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<vide>" : data.get(p).getDescription()));
 
-        h.img.setImageResource(color[(value < 3 ? value : 0)]);
+        //Change card view color
+        if (p % 2 == 0) {
+            h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_300));
+        } else {
+            h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_200));
+        }
+
+        //Attach random bar to card
+        h.img.setImageResource(color[((int) (Math.random() * color.length))]);
 
         if( value == 2){
             value = -1;
@@ -64,6 +73,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
      */
     class NotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        CardView rootView;
         ImageView img;
         RobotoTextView title;
         RobotoTextView info;
@@ -71,6 +81,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         public NotesViewHolder(View itemView) {
             super(itemView);
+            rootView = (CardView) itemView;
             img = (ImageView) itemView.findViewById(R.id.card_img);
             title = (RobotoTextView) itemView.findViewById(R.id.card_title);
             info = (RobotoTextView) itemView.findViewById(R.id.card_sous_title);

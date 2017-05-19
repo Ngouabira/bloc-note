@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="window_background">#FFFFFF</color>
+    <color name="window_background">#cacaca</color>
 
     <color name="primary">#FFC107</color>
     <color name="primary_dark">#FFEB3B</color>
@@ -10,6 +10,10 @@
     <color name="secondary_text">#757575</color>
     <color name="bac1">#FFFFFF</color>
     <color name="bac2">#BDBDBD</color>
+
+
+    <color name="material_grey_300">#e0e0e0</color>
+    <color name="material_grey_200">#eeeeee</color>
 
     <color name="windowBackground">#FFFFFF</color>
     <color name="navigationBarColor">#FFFFFF</color>

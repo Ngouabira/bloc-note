@@ -20,6 +20,7 @@
     <style name="fab">
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">56dp</item>
+        <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:src">@drawable/edit</item>
         <item name="elevation">@dimen/design_fab_elevation</item>
