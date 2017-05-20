@@ -2,9 +2,9 @@ package cg.rcksoft.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +22,17 @@ import cg.rcksoft.data.NoteDao;
 
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener{
 
+    public final static String TAG = AddNoteActivity.class.getSimpleName();
+
     private Toolbar toolbar;
     private ImageView save;
     private ViewGroup note_ly;
     private EditText edtTitle, edtNote;
 
     private NoteDao noteDao;
+
+    private boolean isNote = false;
+    private long id;
 
 
     @Override
@@ -41,8 +46,17 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
         Bundle bd = getIntent().getExtras();
 
-        if(bd.getString("message") != null){
-            Snackbar.make(toolbar, bd.getString("message"), Snackbar.LENGTH_LONG).show();
+        try {
+            Note note = bd.getParcelable("note");
+            if (note != null) {
+                isNote = true;
+                setUpNote(note);
+            } else {
+                isNote = false;
+            }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            Log.e(TAG, "Bundle getParcelbale null");
         }
     }
 
@@ -92,8 +106,17 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    private void setUpNote(Note note) {
+        id = note.getId();
+        edtTitle.setText(note.getTitle());
+        edtNote.setText(note.getDescription());
+    }
+
     private Note getNote(){
         Note note = new Note();
+        if (isNote) {
+            note.setId(id);
+        }
         note.setTitle(edtTitle.getText().toString());
         note.setDescription(edtNote.getText().toString());
         note.setDateEditNote(new Date());
@@ -102,6 +125,11 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     private void addNote(){
         noteDao.insertInTx(getNote());
+        setResult(RESULT_OK);
+    }
+
+    private void editNote() {
+        noteDao.updateInTx(getNote());
         setResult(RESULT_OK);
     }
 
@@ -115,14 +143,26 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.save:{
-                if(!(getNote().getDescription().trim().equals("") && getNote().getTitle().trim().equals(""))){
-                    addNote();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("success", getNote().getTitle());
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                if (!isNote) {
+                    if (!(getNote().getDescription().trim().equals("") && getNote().getTitle().trim().equals(""))) {
+                        addNote();
+                        //intent.putExtra("info", "Note ajoutee");
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        editNote();
+                        //intent.putExtra("info", "Renseigner une note");
+                        startActivity(intent);
+                        finish();
+                    }
+                } else {
+                    editNote();
+                    //intent.putExtra("info", "Renseigner une note");
                     startActivity(intent);
                     finish();
-                    break;
                 }
+                break;
 
             }
         }

@@ -8,11 +8,11 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,8 +35,9 @@ import cg.rcksoft.data.NoteDao;
 import cg.rcksoft.utils.AnimatorUtils;
 import cg.rcksoft.utils.ClipRevealFrame;
 import cg.rcksoft.views.adapters.NotesAdapter;
+import cg.rcksoft.views.listeners.NoteItemListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NoteItemListener {
 
     View rootLayout;
     ClipRevealFrame menuLayout;
@@ -44,12 +45,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     View centerItem;
     private Toolbar toolbar;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private NotesAdapter adapter;
     private FloatingActionButton fab;
     private ImageView delete;
     private ViewGroup note_ly;
     private NoteDao noteDao;
-    private String info;
+    private List<Note> notes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,16 +123,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
-        adapter = new NotesAdapter(getApplicationContext(), noteDao.loadAll());
+        notes = noteDao.loadAll();
+        adapter = new NotesAdapter(getApplicationContext(), notes);
+        adapter.setListener(this);
 
         recyclerView.setAdapter(adapter);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.delete:{
-                Snackbar.make(toolbar, "Delete", Snackbar.LENGTH_SHORT).show();
                 break;
             }
             case R.id.note_ly:{
@@ -140,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             case R.id.fab:{
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
-                intent.putExtra("message", "Créer une note");
                 startActivity(intent);
                 break;
             }
@@ -295,6 +297,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         v.setSelected(!v.isSelected());
     }
 
-
-
+    @Override
+    public void onNoteItemClick(int p) {
+        Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+        intent.putExtra("title", "Modifier la note");
+        intent.putExtra("note", notes.get(p));
+        startActivity(intent);
+        Log.i("__NOTE", "" + notes.get(p).getTitle());
+    }
 }

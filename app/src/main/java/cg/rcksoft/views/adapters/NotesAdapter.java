@@ -8,12 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
+
 import java.util.List;
 
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.utils.font.RobotoTextView;
+import cg.rcksoft.views.listeners.NoteItemListener;
 
 /**
  * Created by RICKEN on 21/06/2016.
@@ -25,6 +28,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     int[] color = {R.drawable.bar_bleue, R.drawable.bar_yelow,
             R.drawable.bar_orange, R.drawable.bar_red, R.drawable.bar_green};
     int value;
+    NoteItemListener listener;
 
     public NotesAdapter(Context myContext, List<Note> data) {
         this.myContext = myContext;
@@ -64,6 +68,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     }
 
+    public void setListener(NoteItemListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public int getItemCount() {
         return data.size();
@@ -79,6 +87,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         RobotoTextView title;
         RobotoTextView info;
         RobotoTextView content;
+        MaterialRippleLayout view;
 
         public NotesViewHolder(View itemView) {
             super(itemView);
@@ -87,18 +96,17 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             title = (RobotoTextView) itemView.findViewById(R.id.card_title);
             info = (RobotoTextView) itemView.findViewById(R.id.card_sous_title);
             content = (RobotoTextView) itemView.findViewById(R.id.card_content);
+            view = (MaterialRippleLayout) itemView.findViewById(R.id.material_ly);
+
+            view.setOnClickListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
-            action(v);
-        }
-
-
-        private void action(View v){
-            int id = v.getId();
-
+            if (listener != null) {
+                listener.onNoteItemClick(getAdapterPosition());
+            }
         }
     }
 
