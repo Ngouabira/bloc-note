@@ -80,7 +80,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     /**
      *
      */
-    class NotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class NotesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         CardView rootView;
         ImageView img;
@@ -99,6 +99,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             view = (MaterialRippleLayout) itemView.findViewById(R.id.material_ly);
 
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
 
         }
 
@@ -107,6 +108,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             if (listener != null) {
                 listener.onNoteItemClick(getAdapterPosition());
             }
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (listener != null) {
+                listener.onNoteItemLongClick(getAdapterPosition());
+            }
+            return true;
         }
     }
 

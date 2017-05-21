@@ -6,4 +6,6 @@ package cg.rcksoft.views.listeners;
 
 public interface NoteItemListener {
     void onNoteItemClick(int p);
+
+    void onNoteItemLongClick(int p);
 }

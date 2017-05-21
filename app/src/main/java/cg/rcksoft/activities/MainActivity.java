@@ -1,9 +1,5 @@
 package cg.rcksoft.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,39 +7,35 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
+import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import com.ogaclejapan.arclayout.ArcLayout;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
-import cg.rcksoft.utils.AnimatorUtils;
 import cg.rcksoft.utils.ClipRevealFrame;
 import cg.rcksoft.views.adapters.NotesAdapter;
 import cg.rcksoft.views.listeners.NoteItemListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, NoteItemListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, NoteItemListener, SearchView.OnQueryTextListener {
 
     View rootLayout;
     ClipRevealFrame menuLayout;
-    ArcLayout arcLayout;
     View centerItem;
     private Toolbar toolbar;
+    private Toolbar toolbar2;
     private RecyclerView recyclerView;
     private NotesAdapter adapter;
     private FloatingActionButton fab;
@@ -51,9 +43,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ViewGroup note_ly;
     private NoteDao noteDao;
     private List<Note> notes;
+    private boolean isMultipleDelete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+            //set the transition
+            Transition ts = new Explode();
+            ts.setDuration(5000);
+            getWindow().setEnterTransition(ts);
+            getWindow().setExitTransition(ts);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -75,11 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -104,18 +100,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void setUpView(){
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
-        note_ly = (LinearLayout)findViewById(R.id.note_ly);
+        //toolbar2 = (Toolbar)findViewById(R.id.toolbar2);
+        //note_ly = (LinearLayout)findViewById(R.id.note_ly);
         recyclerView = (RecyclerView)findViewById(R.id.recycler);
-        delete = (ImageView)findViewById(R.id.delete);
+        //delete = (ImageView)findViewById(R.id.delete);
         fab = (FloatingActionButton)findViewById(R.id.fab);
 
-        note_ly.setOnClickListener(this);
-        delete.setOnClickListener(this);
+        //note_ly.setOnClickListener(this);
+        //delete.setOnClickListener(this);
         fab.setOnClickListener(this);
+
 
         if(toolbar != null){
             setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+            //getSupportActionBar().setTitle("Note");
+            //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationIcon(R.mipmap.box);
+
         }
+
 
     }
 
@@ -134,167 +138,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.delete:{
+            /*case R.id.delete:{
                 break;
-            }
-            case R.id.note_ly:{
+            }*/
+            /*case R.id.note_ly:{
                 finish();
                 break;
-            }
+            }*/
             case R.id.fab:{
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
                 startActivity(intent);
                 break;
             }
         }
-    }
-
-    //=============================================================
-
-    private void showMenu(int cx, int cy, float startRadius, float endRadius) {
-        menuLayout.setVisibility(View.VISIBLE);
-
-        List<Animator> animList = new ArrayList<>();
-
-        Animator revealAnim = createCircularReveal(menuLayout, cx, cy, startRadius, endRadius);
-        revealAnim.setInterpolator(new AccelerateDecelerateInterpolator());
-        revealAnim.setDuration(200);
-
-        animList.add(revealAnim);
-        /*animList.add(createShowItemAnimator(centerItem));*/
-
-        for (int i = 0, len = arcLayout.getChildCount(); i < len; i++) {
-            animList.add(createShowItemAnimator(arcLayout.getChildAt(i)));
-        }
-
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.playSequentially(animList);
-        animSet.start();
-    }
-
-    private void hideMenu(int cx, int cy, float startRadius, float endRadius) {
-        List<Animator> animList = new ArrayList<>();
-
-        for (int i = arcLayout.getChildCount() - 1; i >= 0; i--) {
-            animList.add(createHideItemAnimator(arcLayout.getChildAt(i)));
-        }
-
-        animList.add(createHideItemAnimator(centerItem));
-
-        Animator revealAnim = createCircularReveal(menuLayout, cx, cy, startRadius, endRadius);
-        revealAnim.setInterpolator(new AccelerateDecelerateInterpolator());
-        revealAnim.setDuration(200);
-        revealAnim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                menuLayout.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        animList.add(revealAnim);
-
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.playSequentially(animList);
-        animSet.start();
-
-    }
-
-    private Animator createShowItemAnimator(View item) {
-       /* float dx = centerItem.getX() - item.getX();
-        float dy = centerItem.getY() - item.getY();*/
-
-        item.setScaleX(0f);
-        item.setScaleY(0f);
-       /* item.setTranslationX(dx);
-        item.setTranslationY(dy);*/
-
-        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
-                item,
-                AnimatorUtils.scaleX(0f, 1f),
-                AnimatorUtils.scaleY(0f, 1f)
-                /*AnimatorUtils.translationX(dx, 0f),
-                AnimatorUtils.translationY(dy, 0f)*/
-        );
-
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.setDuration(50);
-        return anim;
-    }
-
-    private Animator createHideItemAnimator(final View item) {
-        /*final float dx = centerItem.getX() - item.getX();
-        final float dy = centerItem.getY() - item.getY();*/
-
-        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
-                item,
-                AnimatorUtils.scaleX(1f, 0f),
-                AnimatorUtils.scaleY(1f, 0f)
-                /*AnimatorUtils.translationX(0f, dx),
-                AnimatorUtils.translationY(0f, dy)*/
-        );
-
-        anim.setInterpolator(new DecelerateInterpolator());
-        anim.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                /*item.setTranslationX(0f);
-                item.setTranslationY(0f);*/
-            }
-        });
-        anim.setDuration(50);
-        return anim;
-    }
-
-    private Animator createCircularReveal(final ClipRevealFrame view, int x, int y, float startRadius,
-                                          float endRadius) {
-        final Animator reveal;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            reveal = ViewAnimationUtils.createCircularReveal(view, x, y, startRadius, endRadius);
-        } else {
-            view.setClipOutLines(true);
-            view.setClipCenter(x, y);
-            reveal = ObjectAnimator.ofFloat(view, "ClipRadius", startRadius, endRadius);
-            reveal.addListener(new Animator.AnimatorListener() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    view.setClipOutLines(false);
-                }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator animation) {
-
-                }
-            });
-        }
-        return reveal;
-    }
-
-    private void onFabClick(View v) {
-        int x = (v.getLeft() + v.getRight()) / 2;
-        int y = (v.getTop() + v.getBottom()) / 2;
-        float radiusOfFab = 1f * v.getWidth() / 2f;
-        float radiusFromFabToRoot = (float) Math.hypot(
-                Math.max(x, rootLayout.getWidth() - x),
-                Math.max(y, rootLayout.getHeight() - y));
-
-        if (v.isSelected()) {
-            hideMenu(x, y, radiusFromFabToRoot, radiusOfFab);
-        } else {
-            showMenu(x, y, radiusOfFab, radiusFromFabToRoot);
-        }
-        v.setSelected(!v.isSelected());
     }
 
     @Override
@@ -304,5 +160,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra("note", notes.get(p));
         startActivity(intent);
         Log.i("__NOTE", "" + notes.get(p).getTitle());
+    }
+
+    @Override
+    public void onNoteItemLongClick(int p) {
+        Log.i("__EVENT", "" + p);
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //recyclerView.setAdapter(new CantiqueAdapter(getCantiques(s), getApplicationContext()));
+        return true;
     }
 }
