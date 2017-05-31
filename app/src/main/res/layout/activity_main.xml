@@ -28,13 +28,21 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:visibility="gone"/>
+
         <include
             android:id="@+id/recycler"
             layout="@layout/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="60dp" />
+            android:layout_marginTop="70dp" />
 
         <include
             android:id="@+id/fab"
