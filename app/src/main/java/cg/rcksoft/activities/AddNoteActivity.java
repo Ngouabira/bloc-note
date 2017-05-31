@@ -3,6 +3,7 @@ package cg.rcksoft.activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -15,14 +16,17 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
+import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
@@ -32,23 +36,34 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public final static String TAG = AddNoteActivity.class.getSimpleName();
-
-    private Toolbar toolbar;
-    private ImageView save;
-    private ViewGroup note_ly;
-    private EditText edtTitle, edtNote;
-
+    public static final String TAG_DATEPICKER = "datepicker";
+    public static final String TAG_TIMEPICKER = "timepicker";
+    @BindView(R.id.toolbar2)
+    Toolbar toolbar;
+    @BindView(R.id.save)
+    ImageView save;
+    @BindView(R.id.note_ly_2)
+    ViewGroup note_ly;
+    @BindView(R.id.edit_note_title)
+    EditText edtTitle;
+    @BindView(R.id.edit_note)
+    EditText edtNote;
+    @BindView(R.id.edit_date)
+    EditText edtDate;
+    @BindView(R.id.edit_hour)
+    EditText edtHour;
+    @BindView(R.id.fl_btn_date)
+    FloatingActionButton mFabDate;
+    @BindView(R.id.fl_btn_hour)
+    FloatingActionButton mFabHour;
+    private int mYear, mMonth, mDay, mHour, mMin, mSec = 0;
+    private Calendar mCalendar;
+    private DatePickerDialog mDatePickerDialog;
+    private TimePickerDialog mTimePickerDialog;
     private NoteDao noteDao;
 
     private boolean isNote = false;
     private long id;
-
-    private DatePickerDialog mDatePickerDialog;
-    private TimePickerDialog mTimePickerDialog;
-    private int mYear, mMonth, mDay, mHour, mMin, mSec = 0;
-
-    public static final String DATEPICKER_TAG = "datepicker";
-    public static final String TIMEPICKER_TAG = "timepicker";
 
 
     @Override
@@ -63,6 +78,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
+        ButterKnife.bind(this);
 
         noteDao = (NoteDao) AppConfig.getReadableDatabase(Note.class);
 
@@ -113,20 +129,83 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    @OnClick(R.id.note_ly_2)
+    public void homeClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @OnClick(R.id.save)
+    public void saveClick(View v) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        if (!isNote) {
+            if (!(getNote().getDescription().trim().equals("") && getNote().getTitle().trim().equals(""))) {
+                addNote();
+                //intent.putExtra("info", "Note ajoutee");
+                startActivity(intent);
+                finish();
+            } else {
+                editNote();
+                //intent.putExtra("info", "Renseigner une note");
+                startActivity(intent);
+                finish();
+            }
+        } else {
+            editNote();
+            //intent.putExtra("info", "Renseigner une note");
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @OnClick(R.id.fl_btn_date)
+    public void fabDateClick(View v) {
+        mDatePickerDialog.show(getSupportFragmentManager(), TAG_DATEPICKER);
+    }
+
+    @OnClick(R.id.fl_btn_hour)
+    public void fabHourClick(View v) {
+        mTimePickerDialog.show(getSupportFragmentManager(), TAG_TIMEPICKER);
+    }
+
     private void setUpView(){
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar2);
+        /*toolbar = (Toolbar)findViewById(R.id.toolbar2);
         note_ly = (LinearLayout)findViewById(R.id.note_ly_2);
         save = (ImageView)findViewById(R.id.save);
         edtTitle = (EditText)findViewById(R.id.edit_note_title);
         edtNote = (EditText)findViewById(R.id.edit_note);
 
         note_ly.setOnClickListener(this);
-        save.setOnClickListener(this);
+        save.setOnClickListener(this);*/
 
         if(toolbar != null){
             setSupportActionBar(toolbar);
         }
+        if (this.mCalendar == null) {
+            mCalendar = Calendar.getInstance();
+            mYear = mCalendar.get(Calendar.YEAR);
+            mMonth = mCalendar.get(Calendar.MONTH);
+            mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
+            mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
+            mMin = mCalendar.get(Calendar.MINUTE);
+        }
+
+        mDatePickerDialog = DatePickerDialog.newInstance(
+                this,
+                mYear,
+                mMonth,
+                mDay
+        );
+        mDatePickerDialog.setYearRange(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.YEAR) + 4);
+
+        mTimePickerDialog = TimePickerDialog.newInstance(
+                this,
+                mHour,
+                mMin,
+                true, false);
+        mTimePickerDialog.setOnTimeSetListener(this);
 
     }
 
@@ -159,37 +238,15 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        /*switch (v.getId()){
             case R.id.note_ly_2:{
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
                 break;
             }
             case R.id.save:{
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                if (!isNote) {
-                    if (!(getNote().getDescription().trim().equals("") && getNote().getTitle().trim().equals(""))) {
-                        addNote();
-                        //intent.putExtra("info", "Note ajoutee");
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        editNote();
-                        //intent.putExtra("info", "Renseigner une note");
-                        startActivity(intent);
-                        finish();
-                    }
-                } else {
-                    editNote();
-                    //intent.putExtra("info", "Renseigner une note");
-                    startActivity(intent);
-                    finish();
-                }
                 break;
 
             }
-        }
+        }*/
     }
 
     @Override
