@@ -17,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
+
 import java.util.Date;
 
 import cg.rcksoft.app.R;
@@ -24,7 +28,8 @@ import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
 
-public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener,
+        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public final static String TAG = AddNoteActivity.class.getSimpleName();
 
@@ -37,6 +42,13 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
     private boolean isNote = false;
     private long id;
+
+    private DatePickerDialog mDatePickerDialog;
+    private TimePickerDialog mTimePickerDialog;
+    private int mYear, mMonth, mDay, mHour, mMin, mSec = 0;
+
+    public static final String DATEPICKER_TAG = "datepicker";
+    public static final String TIMEPICKER_TAG = "timepicker";
 
 
     @Override
@@ -178,5 +190,15 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         }
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int i, int i1) {
+
     }
 }
