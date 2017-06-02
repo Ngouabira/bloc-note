@@ -21,7 +21,8 @@ import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
-import java.util.Calendar;
+import org.joda.time.LocalDateTime;
+
 import java.util.Date;
 
 import butterknife.BindView;
@@ -31,6 +32,7 @@ import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
+import cg.rcksoft.utils.DateUtils;
 
 public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener,
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -56,8 +58,8 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     FloatingActionButton mFabDate;
     @BindView(R.id.fl_btn_hour)
     FloatingActionButton mFabHour;
-    private int mYear, mMonth, mDay, mHour, mMin, mSec = 0;
-    private Calendar mCalendar;
+    private int mYear, mMonth, mDay, mHour, mMin, mSec;
+    private LocalDateTime mLocalDateTime;
     private DatePickerDialog mDatePickerDialog;
     private TimePickerDialog mTimePickerDialog;
     private NoteDao noteDao;
@@ -183,13 +185,13 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         if(toolbar != null){
             setSupportActionBar(toolbar);
         }
-        if (this.mCalendar == null) {
-            mCalendar = Calendar.getInstance();
-            mYear = mCalendar.get(Calendar.YEAR);
-            mMonth = mCalendar.get(Calendar.MONTH);
-            mDay = mCalendar.get(Calendar.DAY_OF_MONTH);
-            mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
-            mMin = mCalendar.get(Calendar.MINUTE);
+        if (mLocalDateTime == null) {
+            mLocalDateTime = LocalDateTime.now();
+            mYear = mLocalDateTime.getYear();
+            mMonth = mLocalDateTime.getMonthOfYear();
+            mDay = mLocalDateTime.getDayOfMonth();
+            mHour = mLocalDateTime.getHourOfDay();
+            mMin = mLocalDateTime.getMinuteOfHour();
         }
 
         mDatePickerDialog = DatePickerDialog.newInstance(
@@ -198,13 +200,13 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 mMonth,
                 mDay
         );
-        mDatePickerDialog.setYearRange(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.YEAR) + 4);
+        mDatePickerDialog.setYearRange(mLocalDateTime.getYear(), mLocalDateTime.getYear() + 5);
 
         mTimePickerDialog = TimePickerDialog.newInstance(
                 this,
                 mHour,
                 mMin,
-                true, false);
+                true, true);
         mTimePickerDialog.setOnTimeSetListener(this);
 
     }
@@ -250,12 +252,21 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onDateSet(DatePickerDialog datePickerDialog, int i, int i1, int i2) {
+    public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
 
+        mYear = year;
+        mMonth = month;
+        mDay = day;
+
+        edtDate.setText(DateUtils.getNumberString(mDay) + "/" + DateUtils.getNumberString(mMonth)
+                + "/" + mYear);
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout radialPickerLayout, int i, int i1) {
+    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hour, int min) {
+        mHour = hour;
+        mMin = min;
 
+        edtHour.setText(hour + ":" + min);
     }
 }

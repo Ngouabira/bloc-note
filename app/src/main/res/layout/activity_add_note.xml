@@ -30,6 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_vertical_margin"
+        android:layout_marginRight="@dimen/activity_vertical_margin"
         app:cardCornerRadius="10dp"
         app:cardElevation="8dp">
 
@@ -50,7 +52,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/fl_btn_date"
@@ -65,7 +68,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:editable="false"
-                        android:hint="@string/hint_date_alert"
                         tools:ignore="Deprecated" />
 
                 </LinearLayout>
@@ -75,7 +77,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp">
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/fl_btn_hour"
@@ -91,7 +94,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:editable="false"
-                        android:hint="@string/hint_hour_alert"
                         tools:ignore="Deprecated" />
 
                 </LinearLayout>
@@ -135,6 +137,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/note_ly_edit"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_marginRight="@dimen/activity_vertical_margin"
             app:cardCornerRadius="10dp"
             app:cardElevation="8dp">
 
@@ -157,6 +161,8 @@
                 android:id="@+id/cardview_note_edit"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/activity_vertical_margin"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_marginTop="5dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="8dp">
