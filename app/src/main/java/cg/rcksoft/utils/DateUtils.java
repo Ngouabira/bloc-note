@@ -20,7 +20,7 @@ public class DateUtils {
     }
 
     public static String getNumberString(int number) {
-        if (number >= 1 && number <= 9) {
+        if (number >= 0 && number <= 9) {
             return "0" + number;
         } else {
             return "" + number;

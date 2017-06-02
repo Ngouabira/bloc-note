@@ -267,6 +267,6 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         mHour = hour;
         mMin = min;
 
-        edtHour.setText(hour + ":" + min);
+        edtHour.setText(DateUtils.getNumberString(hour) + ":" + DateUtils.getNumberString(min));
     }
 }
