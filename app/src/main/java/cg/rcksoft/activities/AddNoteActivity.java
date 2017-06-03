@@ -14,8 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -27,6 +29,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
@@ -46,6 +49,10 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     ImageView save;
     @BindView(R.id.note_ly_2)
     ViewGroup note_ly;
+    @BindView(R.id.ly_alert)
+    ViewGroup mAlarmLayout;
+    @BindView(R.id.sw)
+    Switch mAlarmSw;
     @BindView(R.id.edit_note_title)
     EditText edtTitle;
     @BindView(R.id.edit_note)
@@ -171,17 +178,33 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
         mTimePickerDialog.show(getSupportFragmentManager(), TAG_TIMEPICKER);
     }
 
+    @OnClick(R.id.edit_date)
+    public void fieldDateClick(View v) {
+        mDatePickerDialog.show(getSupportFragmentManager(), TAG_DATEPICKER);
+    }
+
+    @OnClick(R.id.edit_hour)
+    public void fieldHourClick(View v) {
+        mTimePickerDialog.show(getSupportFragmentManager(), TAG_TIMEPICKER);
+    }
+
+    @OnCheckedChanged(R.id.sw)
+    public void switchChanged(CompoundButton buttonView, boolean isChecked) {
+        //Animation anim;
+        if (isChecked) {
+            mAlarmLayout.setVisibility(View.VISIBLE);
+            /*anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
+            mAlarmLayout.startAnimation(anim);*/
+            Log.d(TAG, "Changed state: " + isChecked);
+        } else {
+            mAlarmLayout.setVisibility(View.GONE);
+            /*anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
+            mAlarmLayout.startAnimation(anim);*/
+            Log.d(TAG, "Changed state: " + isChecked);
+        }
+    }
+
     private void setUpView(){
-
-        /*toolbar = (Toolbar)findViewById(R.id.toolbar2);
-        note_ly = (LinearLayout)findViewById(R.id.note_ly_2);
-        save = (ImageView)findViewById(R.id.save);
-        edtTitle = (EditText)findViewById(R.id.edit_note_title);
-        edtNote = (EditText)findViewById(R.id.edit_note);
-
-        note_ly.setOnClickListener(this);
-        save.setOnClickListener(this);*/
-
         if(toolbar != null){
             setSupportActionBar(toolbar);
         }
@@ -208,6 +231,13 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 mMin,
                 true, true);
         mTimePickerDialog.setOnTimeSetListener(this);
+        mAlarmSw.setChecked(false);
+        /*mAlarmSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            }
+        });*/
 
     }
 
