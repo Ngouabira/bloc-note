@@ -37,7 +37,7 @@ import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
 import cg.rcksoft.utils.DateUtils;
 
-public class AddNoteActivity extends AppCompatActivity implements View.OnClickListener,
+public class AddNoteActivity extends AppCompatActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     public final static String TAG = AddNoteActivity.class.getSimpleName();
@@ -155,7 +155,7 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(intent);
                 finish();
             } else {
-                editNote();
+                //editNote();
                 //intent.putExtra("info", "Renseigner une note");
                 startActivity(intent);
                 finish();
@@ -232,12 +232,6 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
                 true, true);
         mTimePickerDialog.setOnTimeSetListener(this);
         mAlarmSw.setChecked(false);
-        /*mAlarmSw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-            }
-        });*/
 
     }
 
@@ -266,19 +260,6 @@ public class AddNoteActivity extends AppCompatActivity implements View.OnClickLi
     private void editNote() {
         noteDao.updateInTx(getNote());
         setResult(RESULT_OK);
-    }
-
-    @Override
-    public void onClick(View v) {
-        /*switch (v.getId()){
-            case R.id.note_ly_2:{
-                break;
-            }
-            case R.id.save:{
-                break;
-
-            }
-        }*/
     }
 
     @Override

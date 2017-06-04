@@ -3,6 +3,7 @@ package cg.rcksoft.views.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +66,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         //Attach random bar to card
         h.img.setImageResource(color[value]);
 
-
+        Log.i("POSITION: ", "" + (p));
     }
 
     public void setListener(NoteItemListener listener) {
@@ -75,6 +76,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     @Override
     public int getItemCount() {
         return data.size();
+    }
+
+    public void deleteItems(int p) {
+        Log.i("ADAPTER", "data size: " + data.size());
+        Log.i("ADAPTER", "deleteItems: " + p);
+        this.data.remove(p);
+        this.notifyItemRemoved(p);
+        this.notifyDataSetChanged();
     }
 
     /**
@@ -106,14 +115,15 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         @Override
         public void onClick(View v) {
             if (listener != null) {
-                listener.onNoteItemClick(getAdapterPosition());
+                listener.onNoteItemClick(getAdapterPosition(), v);
             }
         }
 
         @Override
         public boolean onLongClick(View v) {
             if (listener != null) {
-                listener.onNoteItemLongClick(getAdapterPosition());
+
+                listener.onNoteItemLongClick(getAdapterPosition(), v);
             }
             return true;
         }

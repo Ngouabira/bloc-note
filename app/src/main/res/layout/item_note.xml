@@ -3,34 +3,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cardview_note"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="4dp"
+    android:layout_height="75dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp">
 
 <com.balysv.materialripple.MaterialRippleLayout
     android:id="@+id/material_ly"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="75dp"
     app:mrl_rippleAlpha="0.1"
     app:mrl_rippleOverlay="false">
 
     <RelativeLayout
         android:id="@+id/card_ly"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="75dp">
 
         <ImageView
             android:id="@+id/card_img"
-            android:layout_width="10dp"
+            android:layout_width="15dp"
             android:layout_height="75dp"
             android:scaleType="fitXY"
             android:src="@drawable/bar_red" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/card_ly_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:layout_alignBaseline="@id/card_img"
             android:layout_toRightOf="@id/card_img"
             android:orientation="vertical"
@@ -43,22 +43,22 @@
             <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_content"
                 style="@style/TextViewAppearance.SousTitle"
+                android:layout_below="@id/card_title"
                 android:maxLength="13" />
 
             <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_sous_title"
-                style="@style/TextViewAppearance.Info"/>
+                style="@style/TextViewAppearance.Info"
+                android:layout_below="@id/card_content" />
 
-        </LinearLayout>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="10dp"
+                android:src="@mipmap/ic_access_alarms_black_24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:padding="10dp"
-            android:src="@mipmap/ic_access_alarms_black_24dp" />
+        </RelativeLayout>
 
     </RelativeLayout>
 </com.balysv.materialripple.MaterialRippleLayout>

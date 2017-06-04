@@ -1,10 +1,10 @@
 package cg.rcksoft.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +14,6 @@ import android.transition.Explode;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +22,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.data.NoteDao;
-import cg.rcksoft.utils.ClipRevealFrame;
 import cg.rcksoft.utils.font.RobotoTextView;
 import cg.rcksoft.views.adapters.NotesAdapter;
 import cg.rcksoft.views.listeners.NoteItemListener;
@@ -42,12 +43,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText editSearch;
     private FloatingActionButton fab;
     private RobotoTextView title;
-    private ImageView anc, config, search;
+    private ImageView anc, config, search, delete;
     private ViewGroup note_ly, ly_2, ly_1;
     private NoteDao noteDao;
     private List<Note> notes;
     private boolean isMultipleDelete;
     private boolean isSearch;
+    private HashMap<Integer, View> viewMap = new HashMap<>();
+    private int color = Color.TRANSPARENT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,28 +107,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }*/
     }
 
-    private void setUpView(){
+    private void setUpView() {
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        note_ly = (LinearLayout)findViewById(R.id.note_ly);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        note_ly = (LinearLayout) findViewById(R.id.note_ly);
         //ly_2 = (LinearLayout)findViewById(R.id.ly_2);
-        ly_1 = (LinearLayout)findViewById(R.id.ly_1);
-        recyclerView = (RecyclerView)findViewById(R.id.recycler);
+        ly_1 = (LinearLayout) findViewById(R.id.ly_1);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler);
         title = (RobotoTextView) findViewById(R.id.title);
-        config = (ImageView)findViewById(R.id.config);
-        search = (ImageView)findViewById(R.id.search);
-        anc = (ImageView)findViewById(R.id.anc);
+        config = (ImageView) findViewById(R.id.config);
+        search = (ImageView) findViewById(R.id.search);
+        delete = (ImageView) findViewById(R.id.delete);
+        anc = (ImageView) findViewById(R.id.anc);
         editSearch = (EditText) findViewById(R.id.edit_search);
-        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
 
         note_ly.setOnClickListener(this);
-        //delete.setOnClickListener(this);
+        delete.setOnClickListener(this);
         config.setOnClickListener(this);
         search.setOnClickListener(this);
         fab.setOnClickListener(this);
 
 
-        if(toolbar != null){
+        if (toolbar != null) {
             setSupportActionBar(toolbar);
             //getSupportActionBar().setDisplayShowTitleEnabled(false);
             //getSupportActionBar().setTitle("Note");
@@ -133,68 +137,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //toolbar.setNavigationIcon(R.mipmap.box);
         }
 
-        search.setVisibility(View.VISIBLE);
+        ly_1.setVisibility(View.VISIBLE);
         title.setVisibility(View.VISIBLE);
-        anc.setImageResource(R.mipmap.box);
-        config.setImageResource(R.mipmap.setting);
+        /*anc.setImageResource(R.mipmap.box);
+        config.setImageResource(R.mipmap.setting);*/
 
     }
 
-    private void setUpRecyclerView(){
+    private void setUpRecyclerView() {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
         notes = noteDao.loadAll();
         adapter = new NotesAdapter(getApplicationContext(), notes);
         adapter.setListener(this);
+        Log.i("DATA", "" + notes.size());
 
         recyclerView.setAdapter(adapter);
 
     }
 
-    private void setUpMenu(){
-        if (!isMultipleDelete){
-            search.setVisibility(View.INVISIBLE);
-            config.setImageResource(R.mipmap.trash);
-            title.setVisibility(View.INVISIBLE);
+    private void setUpMenu() {
+        if (!isMultipleDelete) {
+            ly_1.setVisibility(View.GONE);
+            delete.setVisibility(View.VISIBLE);
+            //config.setImageResource(R.mipmap.trash);
+            title.setVisibility(View.GONE);
             anc.setImageResource(R.mipmap.close);
-            Log.i("isMultipleDelete show", ""+isMultipleDelete);
+            Log.i("isMultipleDelete show", "" + isMultipleDelete);
             isMultipleDelete = true;
-        }else if (isMultipleDelete){
-            config.setImageResource(R.mipmap.setting);
-            search.setVisibility(View.VISIBLE);
+        } else if (isMultipleDelete) {
+            //config.setImageResource(R.mipmap.setting);
+            delete.setVisibility(View.GONE);
+            ly_1.setVisibility(View.VISIBLE);
             title.setVisibility(View.VISIBLE);
             anc.setImageResource(R.mipmap.box);
-            Log.i("isMultipleDelete hide", ""+isMultipleDelete);
+            Log.i("isMultipleDelete hide", "" + isMultipleDelete);
             isMultipleDelete = false;
         }
     }
 
+    private void notDeleteAll() {
+        for (Integer i : viewMap.keySet()) {
+            (viewMap.get(i)).setBackgroundColor(color);
+        }
+    }
+
+    private void deleteNotes() {
+        List<Integer> tabs = new ArrayList<>();
+        Log.i("___Main", "size: " + notes.size());
+        Log.i("___Main", "map: " + viewMap.size());
+        for (Integer p : viewMap.keySet()) {
+            Log.i("___Main", "position: " + p);
+            Log.i("___Main", "notes: " + notes.size());
+            tabs.add(p);
+        }
+        Object[] _tabs = tabs.toArray();
+        Arrays.sort(_tabs);
+        for (int i = _tabs.length - 1; i >= 0; i--) {
+            Log.i("OBJECT", "TABS: " + _tabs[i]);
+            noteDao.delete(notes.get(Integer.parseInt(_tabs[i].toString())));
+            adapter.deleteItems(Integer.parseInt(_tabs[i].toString()));
+        }
+        viewMap.clear();
+    }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.config:{
+        switch (v.getId()) {
+            case R.id.config: {
                 break;
-            }case R.id.search:{
-                if (!isSearch){
+            }
+            case R.id.delete: {
+                deleteNotes();
+                setUpMenu();
+                break;
+            }
+            case R.id.search: {
+                if (!isSearch) {
                     editSearch.setVisibility(View.VISIBLE);
                     isSearch = true;
-                }else {
-                    editSearch.setVisibility(View.INVISIBLE);
+                } else {
+                    editSearch.setVisibility(View.GONE);
                     isSearch = false;
                 }
                 break;
             }
-            case R.id.note_ly:{
-                if (title.isEnabled()){
+            case R.id.note_ly: {
+                if (title.isShown()) {
                     finish();
-                }else {
+                } else {
                     isMultipleDelete = true;
                     setUpMenu();
+                    notDeleteAll();
                 }
                 break;
             }
-            case R.id.fab:{
+            case R.id.fab: {
                 Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
                 startActivity(intent);
                 break;
@@ -203,25 +242,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onNoteItemClick(int p) {
-        if (!isMultipleDelete){
+    public void onNoteItemClick(int p, View v) {
+        if (!isMultipleDelete) {
             Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
             intent.putExtra("title", "Modifier la note");
             intent.putExtra("note", notes.get(p));
             startActivity(intent);
             Log.i("__NOTE", "" + notes.get(p).getTitle());
-        }else {
-            Snackbar.make(toolbar, "Select more items", Snackbar.LENGTH_SHORT).show();
+        } else {
+            //View exist
+            if (viewMap.get(p) != null) {
+                v.setBackgroundColor(color);
+                viewMap.remove(p);
+            } else {
+                v.setBackgroundColor(getResources().getColor(R.color.bac2));
+                viewMap.put(Integer.valueOf(p), v);
+            }
+
+            if (viewMap.size() == 0) {
+                setUpMenu();
+            }
         }
     }
 
     @Override
-    public void onNoteItemLongClick(int p) {
+    public void onNoteItemLongClick(int p, View v) {
         Log.i("__EVENT", "" + p);
-        if (!isMultipleDelete){
+        if (!isMultipleDelete) {
+            v.setBackgroundColor(getResources().getColor(R.color.bac2));
+            viewMap.put(Integer.valueOf(p), v);
             setUpMenu();
-        }else {
-            setUpMenu();
+        } else {
+            if (viewMap.size() > 0) {
+                //View exist
+                if (viewMap.get(p) != null) {
+                    v.setBackgroundColor(color);
+                    viewMap.remove(p);
+                } else {
+                    v.setBackgroundColor(getResources().getColor(R.color.bac2));
+                    viewMap.put(Integer.valueOf(p), v);
+                }
+                if (viewMap.size() == 0) {
+                    setUpMenu();
+                }
+            } else {
+                setUpMenu();
+            }
         }
     }
 

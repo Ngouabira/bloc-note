@@ -19,11 +19,12 @@
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView
-        style="@android:style/Widget.DeviceDefault.Light.ScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/app_bar2"
-        android:fillViewport="true">
+        android:clipToPadding="false"
+        android:fillViewport="true"
+        android:scrollbarStyle="outsideOverlay">
 
         <LinearLayout
             android:layout_width="match_parent"
