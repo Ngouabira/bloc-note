@@ -18,4 +18,8 @@
     <string name="hint_date_alert">22/07/2017</string>
     <string name="hint_hour_alert">00h:00</string>
     <string name="hint_search">Recherche</string>
+    <string name="message">Voulez-vous vraiment supprimer cette note ?</string>
+    <string name="non">Non</string>
+    <string name="dialog_title">Confirmation</string>
+    <string name="oui">Oui</string>
 </resources>

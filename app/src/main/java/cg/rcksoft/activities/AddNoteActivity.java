@@ -1,9 +1,11 @@
 package cg.rcksoft.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -171,8 +173,7 @@ public class AddNoteActivity extends AppCompatActivity implements
 
     @OnClick(R.id.delete)
     public void deleteClick(View v) {
-        noteDao.delete(note);
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        showDialog();
     }
 
     @OnClick(R.id.fl_btn_date)
@@ -209,6 +210,21 @@ public class AddNoteActivity extends AppCompatActivity implements
             mAlarmLayout.startAnimation(anim);*/
             Log.d(TAG, "Changed state: " + isChecked);
         }
+    }
+
+    private void showDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getApplicationContext());
+        dialog.setIcon(R.drawable.logo);
+        dialog.setTitle(R.string.dialog_title);
+        dialog.setMessage(R.string.message);
+        dialog.setNegativeButton(R.string.non, null);
+        dialog.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                noteDao.delete(note);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            }
+        });
     }
 
     private void setUpView(){
