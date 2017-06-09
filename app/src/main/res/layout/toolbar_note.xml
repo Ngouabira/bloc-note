@@ -46,6 +46,14 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/delete"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="fitXY"
+                android:src="@mipmap/trash"
+                android:visibility="gone" />
+
+            <ImageView
                 android:id="@+id/save"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

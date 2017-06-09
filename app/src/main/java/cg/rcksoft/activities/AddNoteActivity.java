@@ -47,6 +47,8 @@ public class AddNoteActivity extends AppCompatActivity implements
     Toolbar toolbar;
     @BindView(R.id.save)
     ImageView save;
+    @BindView(R.id.delete)
+    ImageView delete;
     @BindView(R.id.note_ly_2)
     ViewGroup note_ly;
     @BindView(R.id.ly_alert)
@@ -70,6 +72,7 @@ public class AddNoteActivity extends AppCompatActivity implements
     private DatePickerDialog mDatePickerDialog;
     private TimePickerDialog mTimePickerDialog;
     private NoteDao noteDao;
+    private Note note;
 
     private boolean isNote = false;
     private long id;
@@ -96,7 +99,7 @@ public class AddNoteActivity extends AppCompatActivity implements
         Bundle bd = getIntent().getExtras();
 
         try {
-            Note note = bd.getParcelable("note");
+            note = bd.getParcelable("note");
             if (note != null) {
                 isNote = true;
                 setUpNote(note);
@@ -153,19 +156,23 @@ public class AddNoteActivity extends AppCompatActivity implements
                 addNote();
                 //intent.putExtra("info", "Note ajoutee");
                 startActivity(intent);
-                finish();
             } else {
                 //editNote();
                 //intent.putExtra("info", "Renseigner une note");
-                startActivity(intent);
                 finish();
+                startActivity(intent);
             }
         } else {
             editNote();
             //intent.putExtra("info", "Renseigner une note");
             startActivity(intent);
-            finish();
         }
+    }
+
+    @OnClick(R.id.delete)
+    public void deleteClick(View v) {
+        noteDao.delete(note);
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
     }
 
     @OnClick(R.id.fl_btn_date)
@@ -239,6 +246,7 @@ public class AddNoteActivity extends AppCompatActivity implements
         id = note.getId();
         edtTitle.setText(note.getTitle());
         edtNote.setText(note.getDescription());
+        delete.setVisibility(View.VISIBLE);
     }
 
     private Note getNote(){
