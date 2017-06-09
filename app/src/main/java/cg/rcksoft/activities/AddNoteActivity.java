@@ -1,11 +1,10 @@
 package cg.rcksoft.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -21,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -116,18 +117,12 @@ public class AddNoteActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_note, menu);
+        //getMenuInflater().inflate(R.menu.menu_add_note, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -213,18 +208,26 @@ public class AddNoteActivity extends AppCompatActivity implements
     }
 
     private void showDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getApplicationContext());
-        dialog.setIcon(R.drawable.logo);
-        dialog.setTitle(R.string.dialog_title);
-        dialog.setMessage(R.string.message);
-        dialog.setNegativeButton(R.string.non, null);
-        dialog.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                noteDao.delete(note);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            }
-        });
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title(R.string.dialog_title)
+                .iconRes(R.mipmap.box)
+                .titleColorRes(android.R.color.black)
+                .content(R.string.message)
+                .positiveText(R.string.oui)
+                .negativeText(R.string.non)
+                .backgroundColorRes(R.color.primary)
+                .contentColorRes(android.R.color.black)
+                .positiveColor(getResources().getColor(android.R.color.black))
+                .negativeColor(getResources().getColor(android.R.color.black))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        noteDao.delete(note);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    }
+                }).build();
+        dialog.show();
+        dialog.setCanceledOnTouchOutside(false);
     }
 
     private void setUpView(){

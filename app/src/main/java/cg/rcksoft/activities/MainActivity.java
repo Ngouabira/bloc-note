@@ -20,13 +20,15 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cg.rcksoft.app.R;
 import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
@@ -37,19 +39,34 @@ import cg.rcksoft.views.listeners.NoteItemListener;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, NoteItemListener, SearchView.OnQueryTextListener {
 
-    private Toolbar toolbar;
-    private RecyclerView recyclerView;
-    private NotesAdapter adapter;
-    private EditText editSearch;
-    private FloatingActionButton fab;
-    private RobotoTextView title;
-    private ImageView anc, config, search, delete;
-    private ViewGroup note_ly, ly_2, ly_1;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.recycler)
+    RecyclerView recyclerView;
+    @BindView(R.id.edit_search)
+    EditText editSearch;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.title)
+    RobotoTextView title;
+    @BindView(R.id.anc)
+    ImageView anc;
+    @BindView(R.id.config)
+    ImageView config;
+    @BindView(R.id.search)
+    ImageView search;
+    @BindView(R.id.delete)
+    ImageView delete;
+    @BindView(R.id.ly_1)
+    ViewGroup ly_1;
+    @BindView(R.id.note_ly)
+    ViewGroup note_ly;
+    NotesAdapter adapter;
     private NoteDao noteDao;
     private List<Note> notes;
+    private HashMap<Integer, View> viewMap = new HashMap<>();
     private boolean isMultipleDelete;
     private boolean isSearch;
-    private HashMap<Integer, View> viewMap = new HashMap<>();
     private int color = Color.TRANSPARENT;
 
     @Override
@@ -65,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
 
         new AppConfig(getApplicationContext());
         isMultipleDelete = false;
@@ -107,11 +125,149 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }*/
     }
 
+    @Override
+    public void onClick(View v) {
+        /*switch (v.getId()) {
+            case R.id.config: {
+                break;
+            }
+            case R.id.delete: {
+                deleteNotes();
+                setUpMenu();
+                break;
+            }
+            case R.id.search: {
+                if (!isSearch) {
+                    editSearch.setVisibility(View.VISIBLE);
+                    isSearch = true;
+                } else {
+                    editSearch.setVisibility(View.GONE);
+                    isSearch = false;
+                }
+                break;
+            }
+            case R.id.note_ly: {
+                if (title.isShown()) {
+                    finish();
+                } else {
+                    isMultipleDelete = true;
+                    setUpMenu();
+                    notDeleteAll();
+                }
+                break;
+            }
+            case R.id.fab: {
+                Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+                startActivity(intent);
+                break;
+            }
+        }*/
+    }
+
+    @Override
+    public void onNoteItemClick(int p, View v) {
+        if (!isMultipleDelete) {
+            Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+            intent.putExtra("title", "Modifier la note");
+            intent.putExtra("note", notes.get(p));
+            startActivity(intent);
+            Log.i("__NOTE", "" + notes.get(p).getTitle());
+        } else {
+            //View exist
+            if (viewMap.get(p) != null) {
+                v.setBackgroundColor(color);
+                viewMap.remove(p);
+            } else {
+                v.setBackgroundColor(getResources().getColor(R.color.bac2));
+                viewMap.put(Integer.valueOf(p), v);
+            }
+
+            if (viewMap.size() == 0) {
+                setUpMenu();
+            }
+        }
+    }
+
+    @Override
+    public void onNoteItemLongClick(int p, View v) {
+        Log.i("__EVENT", "" + p);
+        if (!isMultipleDelete) {
+            v.setBackgroundColor(getResources().getColor(R.color.bac2));
+            viewMap.put(Integer.valueOf(p), v);
+            setUpMenu();
+        } else {
+            if (viewMap.size() > 0) {
+                //View exist
+                if (viewMap.get(p) != null) {
+                    v.setBackgroundColor(color);
+                    viewMap.remove(p);
+                } else {
+                    v.setBackgroundColor(getResources().getColor(R.color.bac2));
+                    viewMap.put(Integer.valueOf(p), v);
+                }
+                if (viewMap.size() == 0) {
+                    setUpMenu();
+                }
+            } else {
+                setUpMenu();
+            }
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //recyclerView.setAdapter(new CantiqueAdapter(getCantiques(s), getApplicationContext()));
+        return true;
+    }
+
+    @OnClick(R.id.fab)
+    public void onFabClic(View v) {
+        Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.note_ly)
+    public void onHomClic(View v) {
+        if (title.isShown()) {
+            finish();
+        } else {
+            isMultipleDelete = true;
+            setUpMenu();
+            notDeleteAll();
+        }
+    }
+
+    @OnClick(R.id.edit_search)
+    public void onSearchClic(View v) {
+        if (!isSearch) {
+            editSearch.setVisibility(View.VISIBLE);
+            isSearch = true;
+        } else {
+            editSearch.setVisibility(View.GONE);
+            isSearch = false;
+        }
+    }
+
+    @OnClick(R.id.delete)
+    public void onDeleteClic(View v) {
+        deleteNotes();
+        setUpMenu();
+    }
+
+    @OnClick(R.id.config)
+    public void onConfigClic(View v) {
+
+    }
+
     private void setUpView() {
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*toolbar = (Toolbar) findViewById(R.id.toolbar);
         note_ly = (LinearLayout) findViewById(R.id.note_ly);
-        //ly_2 = (LinearLayout)findViewById(R.id.ly_2);
         ly_1 = (LinearLayout) findViewById(R.id.ly_1);
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         title = (RobotoTextView) findViewById(R.id.title);
@@ -120,13 +276,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         delete = (ImageView) findViewById(R.id.delete);
         anc = (ImageView) findViewById(R.id.anc);
         editSearch = (EditText) findViewById(R.id.edit_search);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);*/
 
-        note_ly.setOnClickListener(this);
+        /*note_ly.setOnClickListener(this);
         delete.setOnClickListener(this);
         config.setOnClickListener(this);
         search.setOnClickListener(this);
-        fab.setOnClickListener(this);
+        fab.setOnClickListener(this);*/
 
 
         if (toolbar != null) {
@@ -200,105 +356,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             adapter.deleteItems(Integer.parseInt(_tabs[i].toString()));
         }
         viewMap.clear();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.config: {
-                break;
-            }
-            case R.id.delete: {
-                deleteNotes();
-                setUpMenu();
-                break;
-            }
-            case R.id.search: {
-                if (!isSearch) {
-                    editSearch.setVisibility(View.VISIBLE);
-                    isSearch = true;
-                } else {
-                    editSearch.setVisibility(View.GONE);
-                    isSearch = false;
-                }
-                break;
-            }
-            case R.id.note_ly: {
-                if (title.isShown()) {
-                    finish();
-                } else {
-                    isMultipleDelete = true;
-                    setUpMenu();
-                    notDeleteAll();
-                }
-                break;
-            }
-            case R.id.fab: {
-                Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
-                startActivity(intent);
-                break;
-            }
-        }
-    }
-
-    @Override
-    public void onNoteItemClick(int p, View v) {
-        if (!isMultipleDelete) {
-            Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
-            intent.putExtra("title", "Modifier la note");
-            intent.putExtra("note", notes.get(p));
-            startActivity(intent);
-            Log.i("__NOTE", "" + notes.get(p).getTitle());
-        } else {
-            //View exist
-            if (viewMap.get(p) != null) {
-                v.setBackgroundColor(color);
-                viewMap.remove(p);
-            } else {
-                v.setBackgroundColor(getResources().getColor(R.color.bac2));
-                viewMap.put(Integer.valueOf(p), v);
-            }
-
-            if (viewMap.size() == 0) {
-                setUpMenu();
-            }
-        }
-    }
-
-    @Override
-    public void onNoteItemLongClick(int p, View v) {
-        Log.i("__EVENT", "" + p);
-        if (!isMultipleDelete) {
-            v.setBackgroundColor(getResources().getColor(R.color.bac2));
-            viewMap.put(Integer.valueOf(p), v);
-            setUpMenu();
-        } else {
-            if (viewMap.size() > 0) {
-                //View exist
-                if (viewMap.get(p) != null) {
-                    v.setBackgroundColor(color);
-                    viewMap.remove(p);
-                } else {
-                    v.setBackgroundColor(getResources().getColor(R.color.bac2));
-                    viewMap.put(Integer.valueOf(p), v);
-                }
-                if (viewMap.size() == 0) {
-                    setUpMenu();
-                }
-            } else {
-                setUpMenu();
-            }
-        }
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        //recyclerView.setAdapter(new CantiqueAdapter(getCantiques(s), getApplicationContext()));
-        return true;
     }
 }
