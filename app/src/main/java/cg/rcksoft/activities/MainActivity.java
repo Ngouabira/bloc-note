@@ -226,13 +226,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @OnClick(R.id.fab)
-    public void onFabClic(View v) {
+    public void onFabClick(View v) {
         Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.note_ly)
-    public void onHomClic(View v) {
+    public void onHomClick(View v) {
         if (title.isShown()) {
             finish();
         } else {
@@ -242,8 +242,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @OnClick(R.id.edit_search)
-    public void onSearchClic(View v) {
+    @OnClick(R.id.search)
+    public void onSearchClick(View v) {
         if (!isSearch) {
             editSearch.setVisibility(View.VISIBLE);
             isSearch = true;
@@ -254,13 +254,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @OnClick(R.id.delete)
-    public void onDeleteClic(View v) {
+    public void onDeleteClick(View v) {
         deleteNotes();
         setUpMenu();
     }
 
     @OnClick(R.id.config)
-    public void onConfigClic(View v) {
+    public void onConfigClick(View v) {
 
     }
 

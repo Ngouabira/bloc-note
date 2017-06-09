@@ -3,7 +3,6 @@ package cg.rcksoft.views.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +49,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         h.title.setText(data.get(p).getTitle().trim().isEmpty() ? "<Pas de titre>" : data.get(p).getTitle());
         h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
-        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<Accun contenu>" : data.get(p).getDescription()));
-
+        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<Accun contenu>" :
+                (data.get(p).getDescription())));
+        //h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_200));
         //Change card view color
         if (p % 2 == 0) {
             h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_300));
@@ -65,8 +65,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         //Attach random bar to card
         h.img.setImageResource(color[value]);
+    }
 
-        Log.i("POSITION: ", "" + (p));
+    @Deprecated
+    private String getContenLabel(String desc) {
+        if (desc.length() > 21) {
+            return desc.substring(0, 20) + "...";
+        }
+        return desc;
     }
 
     public void setListener(NoteItemListener listener) {
@@ -79,8 +85,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     public void deleteItems(int p) {
-        Log.i("ADAPTER", "data size: " + data.size());
-        Log.i("ADAPTER", "deleteItems: " + p);
         this.data.remove(p);
         this.notifyItemRemoved(p);
         this.notifyDataSetChanged();
@@ -122,7 +126,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         @Override
         public boolean onLongClick(View v) {
             if (listener != null) {
-
                 listener.onNoteItemLongClick(getAdapterPosition(), v);
             }
             return true;

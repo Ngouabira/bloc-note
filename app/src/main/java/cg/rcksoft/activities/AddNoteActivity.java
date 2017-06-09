@@ -217,8 +217,8 @@ public class AddNoteActivity extends AppCompatActivity implements
                 .negativeText(R.string.non)
                 .backgroundColorRes(R.color.primary)
                 .contentColorRes(android.R.color.black)
-                .positiveColor(getResources().getColor(android.R.color.black))
-                .negativeColor(getResources().getColor(android.R.color.black))
+                /*.positiveColor(getResources().getColor(android.R.color.black))
+                .negativeColor(getResources().getColor(android.R.color.black))*/
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {

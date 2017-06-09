@@ -44,7 +44,8 @@
                 android:id="@+id/card_content"
                 style="@style/TextViewAppearance.SousTitle"
                 android:layout_below="@id/card_title"
-                android:maxLength="13" />
+                android:maxLength="20"
+                android:maxLines="1" />
 
             <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_sous_title"
