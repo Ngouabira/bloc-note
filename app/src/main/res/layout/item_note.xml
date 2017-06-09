@@ -53,10 +53,21 @@
                 android:layout_below="@id/card_content" />
 
             <ImageView
+                android:id="@+id/img_alarm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
+                android:src="@mipmap/ic_access_alarms_black_24dp"
+                android:visibility="invisible" />
+
+            <ImageView
+                android:id="@+id/img_favori"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/img_alarm"
+                android:padding="5dp"
                 android:src="@mipmap/ic_access_alarms_black_24dp" />
 
         </RelativeLayout>

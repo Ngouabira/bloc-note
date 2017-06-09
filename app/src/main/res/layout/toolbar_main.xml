@@ -72,7 +72,8 @@
                     android:layout_height="40dp"
                     android:background="@drawable/selector_background_full"
                     android:scaleType="fitXY"
-                    android:src="@mipmap/setting"/>
+                    android:src="@mipmap/setting"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
