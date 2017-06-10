@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -78,7 +79,9 @@ public class AddNoteActivity extends AppCompatActivity implements
     private Note note;
 
     private boolean isNote = false;
+    private boolean isSwChecked = false;
     private long id;
+    private String flag;
 
 
     @Override
@@ -117,8 +120,8 @@ public class AddNoteActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        //getMenuInflater().inflate(R.menu.menu_add_note, menu);
-        return true;
+        getMenuInflater().inflate(R.menu.menu_add_note, menu);
+        return false;
     }
 
     @Override
@@ -160,9 +163,20 @@ public class AddNoteActivity extends AppCompatActivity implements
                 startActivity(intent);
             }
         } else {
-            editNote();
-            //intent.putExtra("info", "Renseigner une note");
-            startActivity(intent);
+            if (isSwChecked) {
+                if (getNote().getDateAlarm().equals("") && getNote().getHeurAlarm().equals("")) {
+                    Snackbar.make(toolbar, "Alert actif, veillez le configurée !", Snackbar.LENGTH_LONG).show();
+                    //Set EditText Error
+                } else {
+                    editNote();
+                    //intent.putExtra("info", "Renseigner une note");
+                    startActivity(intent);
+                }
+            } else {
+                editNote();
+                //intent.putExtra("info", "Renseigner une note");
+                startActivity(intent);
+            }
         }
     }
 
@@ -193,17 +207,23 @@ public class AddNoteActivity extends AppCompatActivity implements
 
     @OnCheckedChanged(R.id.sw)
     public void switchChanged(CompoundButton buttonView, boolean isChecked) {
+        swHandler(isChecked);
+    }
+
+    private void swHandler(boolean isChecked) {
         //Animation anim;
         if (isChecked) {
             mAlarmLayout.setVisibility(View.VISIBLE);
+            mAlarmSw.setChecked(true);
             /*anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_in);
             mAlarmLayout.startAnimation(anim);*/
-            Log.d(TAG, "Changed state: " + isChecked);
+            isSwChecked = isChecked;
         } else {
             mAlarmLayout.setVisibility(View.GONE);
+            mAlarmSw.setChecked(false);
             /*anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fade_out);
             mAlarmLayout.startAnimation(anim);*/
-            Log.d(TAG, "Changed state: " + isChecked);
+            isSwChecked = isChecked;
         }
     }
 
@@ -263,22 +283,40 @@ public class AddNoteActivity extends AppCompatActivity implements
 
     private void setUpNote(Note note) {
         id = note.getId();
+        flag = note.getFlagFavorite();
         edtTitle.setText(note.getTitle());
         edtNote.setText(note.getDescription());
         delete.setVisibility(View.VISIBLE);
+        if (note.getHeurAlarm().equals("") && note.getDateAlarm().equals("")) {
+            swHandler(false);
+        } else {
+            swHandler(true);
+            edtDate.setText(note.getDateAlarm());
+            edtHour.setText(note.getHeurAlarm());
+        }
     }
 
     private Note getNote(){
         Note note = new Note();
         if (isNote) {
             note.setId(id);
+            note.setFlagFavorite(flag);
+        } else {
+            note.setFlagFavorite("N");
         }
+
+        if (isSwChecked) {
+            note.setHeurAlarm(edtHour.getText().toString().trim());
+            note.setDateAlarm(edtDate.getText().toString().trim());
+        } else {
+            note.setHeurAlarm("");
+            note.setDateAlarm("");
+        }
+
         note.setTitle(edtTitle.getText().toString());
         note.setDescription(edtNote.getText().toString());
         note.setDateEditNote(new Date());
-        note.setHeurAlarm("");
-        note.setDateAlarm("");
-        note.setFlagFavorite("N");
+
         return note;
     }
 

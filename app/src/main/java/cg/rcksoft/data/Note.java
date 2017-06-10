@@ -57,6 +57,9 @@ public class Note implements Parcelable {
         }
         title = in.readString();
         description = in.readString();
+        flagFavorite = in.readString();
+        dateAlarm = in.readString();
+        heurAlarm = in.readString();
     }
 
     /**
@@ -137,5 +140,8 @@ public class Note implements Parcelable {
         }
         dest.writeString(title);
         dest.writeString(description);
+        dest.writeString(flagFavorite);
+        dest.writeString(dateAlarm);
+        dest.writeString(heurAlarm);
     }
 }

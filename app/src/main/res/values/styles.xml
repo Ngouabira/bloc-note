@@ -13,7 +13,20 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="AppTheme.SearchView" parent="android:Widget">
+        <!--<item name="layout">@layout/abc_search_view</item>
+        <item name="queryBackground">@drawable/abc_textfield_search_material</item>
+        <item name="submitBackground">@drawable/abc_textfield_search_material</item>-->
+        <item name="closeIcon">@drawable/abc_ic_clear_material</item>
+        <item name="searchIcon">@mipmap/search</item>
+        <item name="searchHintIcon">@mipmap/search</item>
+        <item name="goIcon">@mipmap/search</item>
+        <!--<item name="voiceIcon">@drawable/abc_ic_voice_search_api_material</item>
+        <item name="commitIcon">@drawable/abc_ic_commit_search_api_mtrl_alpha</item>
+        <item name="suggestionRowLayout">@layout/abc_search_dropdown_item_icons_2line</item>-->
+    </style>
 
     <style name="AppTheme.PopupOverlay" parent="AppTheme" />
 
@@ -22,7 +35,7 @@
         <item name="android:layout_height">56dp</item>
         <item name="android:layout_margin">16dp</item>
         <item name="android:layout_gravity">bottom|end</item>
-        <item name="android:src">@drawable/edit</item>
+        <item name="android:src">@drawable/ic_note_add</item>
         <item name="elevation">@dimen/design_fab_elevation</item>
         <item name="android:color">@color/accent</item>
         <item name="android:clickable">true</item>

@@ -44,14 +44,27 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(NotesViewHolder h, int p) {
-
         value++;
+        final Note note = data.get(p);
 
-        h.title.setText(data.get(p).getTitle().trim().isEmpty() ? "<Pas de titre>" : data.get(p).getTitle());
-        h.info.setText(AppConfig.dateFormat(data.get(p).getDateEditNote()));
-        h.content.setText((data.get(p).getDescription().trim().isEmpty() ? "<Accun contenu>" :
-                (data.get(p).getDescription())));
-        //h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_200));
+        h.title.setText(note.getTitle().trim().isEmpty() ? "<Pas de titre>" : note.getTitle());
+        h.info.setText(AppConfig.dateFormat(note.getDateEditNote()));
+        h.content.setText((note.getDescription().trim().isEmpty() ? "<Accun contenu>" :
+                (note.getDescription())));
+        //Set favorite
+        if (note.equals("F")) {
+            h.favorite.setImageResource(R.drawable.ic_favorite);
+        } else {
+            h.favorite.setImageResource(R.drawable.ic_no_favorite);
+        }
+
+        //Set Alarm
+        if (note.getDateAlarm().equals("") && note.getHeurAlarm().equals("")) {
+            h.alarm.setImageResource(R.drawable.ic_no_alarm);
+        } else {
+            h.alarm.setImageResource(R.drawable.ic_notif_actif);
+        }
+
         //Change card view color
         if (p % 2 == 0) {
             h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_300));
@@ -90,6 +103,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         this.notifyDataSetChanged();
     }
 
+    public void filterData(List<Note> notes) {
+        this.data.clear();
+        this.data.addAll(notes);
+        this.notifyDataSetChanged();
+    }
+
+    public void rtData(int p) {
+
+    }
+
+    public void initData() {
+
+    }
+
     /**
      *
      */
@@ -97,6 +124,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
         CardView rootView;
         ImageView img;
+        ImageView favorite;
+        ImageView alarm;
         RobotoTextView title;
         RobotoTextView info;
         RobotoTextView content;
@@ -106,30 +135,47 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             super(itemView);
             rootView = (CardView) itemView;
             img = (ImageView) itemView.findViewById(R.id.card_img);
+            favorite = (ImageView) itemView.findViewById(R.id.img_favorite);
+            alarm = (ImageView) itemView.findViewById(R.id.img_alarm);
             title = (RobotoTextView) itemView.findViewById(R.id.card_title);
             info = (RobotoTextView) itemView.findViewById(R.id.card_sous_title);
             content = (RobotoTextView) itemView.findViewById(R.id.card_content);
             view = (MaterialRippleLayout) itemView.findViewById(R.id.material_ly);
 
             view.setOnClickListener(this);
+            favorite.setOnClickListener(this);
             view.setOnLongClickListener(this);
+            favorite.setOnLongClickListener(this);
 
         }
 
         @Override
         public void onClick(View v) {
+            int id = v.getId();
             if (listener != null) {
+                //if (id == R.id.material_ly){
                 listener.onNoteItemClick(getAdapterPosition(), v);
+                //}
+                /*else if (id == R.id.img_favorite){
+                    listener.onNoteFavoriteClick(getAdapterPosition(), v);
+                }*/
             }
         }
 
         @Override
         public boolean onLongClick(View v) {
+            int id = v.getId();
             if (listener != null) {
+                //if (id == R.id.material_ly){
                 listener.onNoteItemLongClick(getAdapterPosition(), v);
+                //}
+                /*else if (id == R.id.img_favorite){
+                    listener.onNoteFavoriteLongClick(getAdapterPosition(), v);
+                }*/
             }
             return true;
         }
+
     }
 
 }

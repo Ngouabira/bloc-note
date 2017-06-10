@@ -7,7 +7,12 @@ import android.view.View;
  */
 
 public interface NoteItemListener {
+
     void onNoteItemClick(int p, View v);
 
     void onNoteItemLongClick(int p, View v);
+
+    void onNoteFavoriteClick(int p, View v);
+
+    void onNoteFavoriteLongClick(int p, View v);
 }

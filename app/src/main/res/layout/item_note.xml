@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview_note"
     android:layout_width="match_parent"
     android:layout_height="75dp"
@@ -25,7 +26,8 @@
             android:layout_width="15dp"
             android:layout_height="75dp"
             android:scaleType="fitXY"
-            android:src="@drawable/bar_red" />
+            android:src="@drawable/bar_red"
+            tools:ignore="ContentDescription" />
 
         <RelativeLayout
             android:id="@+id/card_ly_text"
@@ -34,7 +36,8 @@
             android:layout_alignBaseline="@id/card_img"
             android:layout_toRightOf="@id/card_img"
             android:orientation="vertical"
-            android:paddingLeft="10dp">
+            android:paddingLeft="10dp"
+            tools:ignore="RtlHardcoded,RtlSymmetry">
 
             <cg.rcksoft.utils.font.RobotoTextView
                 android:id="@+id/card_title"
@@ -58,17 +61,19 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:padding="10dp"
-                android:src="@mipmap/ic_access_alarms_black_24dp"
-                android:visibility="invisible" />
+                android:src="@drawable/ic_no_alarm"
+                tools:ignore="ContentDescription,RtlHardcoded" />
 
             <ImageView
-                android:id="@+id/img_favori"
+                android:id="@+id/img_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/img_alarm"
+                android:contentDescription=""
                 android:padding="5dp"
-                android:src="@mipmap/ic_access_alarms_black_24dp" />
+                android:src="@drawable/ic_no_favorite"
+                tools:ignore="ContentDescription,RtlHardcoded" />
 
         </RelativeLayout>
 

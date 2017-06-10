@@ -5,14 +5,17 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Transition;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +39,7 @@ import cg.rcksoft.utils.font.RobotoTextView;
 import cg.rcksoft.views.adapters.NotesAdapter;
 import cg.rcksoft.views.listeners.NoteItemListener;
 
-public class MainActivity extends AppCompatActivity implements NoteItemListener {
+public class MainActivity extends AppCompatActivity implements NoteItemListener, SearchView.OnQueryTextListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
     ViewGroup ly_1;
     @BindView(R.id.note_ly)
     ViewGroup note_ly;
+    SearchView searchView;
     NotesAdapter adapter;
     private NoteDao noteDao;
     private List<Note> notes;
@@ -93,8 +97,14 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        MenuInflater mf = getMenuInflater();
+        mf.inflate(R.menu.menu_main, menu);
+
+        searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.btn_search));
+        searchView.setIconified(true);
+        searchView.setOnQueryTextListener(this);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -104,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
             case R.id.favor: {
                 break;
             }
-            case R.id.action_settings: {
+            case R.id.setting: {
                 break;
             }
             case R.id.about: {
@@ -181,6 +191,53 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
         }
     }
 
+    @Override
+    public void onNoteFavoriteClick(int p, View v) {
+        final Note note = notes.get(p);
+        if (note.getFlagFavorite().equals("F")) {
+            v.setBackgroundResource(R.drawable.ic_no_favorite);
+            note.setFlagFavorite("N");
+            noteDao.updateInTx(note);
+            Log.d("onNoteFavoriteClick", "Note: " + note.getFlagFavorite());
+        } else {
+            v.setBackgroundResource(R.drawable.ic_favorite);
+            note.setFlagFavorite("F");
+            noteDao.updateInTx(note);
+            Log.d("onNoteFavoriteClick", "Note: " + note.getFlagFavorite());
+        }
+    }
+
+    @Override
+    public void onNoteFavoriteLongClick(int p, View v) {
+        final Note note = notes.get(p);
+        if (note.getFlagFavorite().equalsIgnoreCase("F")) {
+            v.setBackgroundResource(R.drawable.ic_no_favorite);
+            note.setFlagFavorite("N");
+            noteDao.updateInTx(note);
+            Log.d("onNoteFavoriteLongClick", "Note: " + note.getFlagFavorite());
+        } else {
+            v.setBackgroundResource(R.drawable.ic_favorite);
+            note.setFlagFavorite("F");
+            noteDao.updateInTx(note);
+            Log.d("onNoteFavoriteLongClick", "Note: " + note.getFlagFavorite());
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        /*adapter = new NotesAdapter(getApplicationContext(), getNotesFilter(newText.toLowerCase()));
+        adapter.setListener(this);
+
+        recyclerView.setAdapter(adapter);*/
+        adapter.filterData(getNotesFilter(newText.toLowerCase()));
+        return true;
+    }
+
     @OnClick(R.id.fab)
     public void onFabClick(View v) {
         Intent intent = new Intent(getApplicationContext(), AddNoteActivity.class);
@@ -231,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
         notes = noteDao.loadAll();
         adapter = new NotesAdapter(getApplicationContext(), notes);
         adapter.setListener(this);
-        Log.i("DATA", "" + notes.size());
 
         recyclerView.setAdapter(adapter);
 
@@ -241,14 +297,16 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
         if (!isMultipleDelete) {
             ly_1.setVisibility(View.GONE);
             delete.setVisibility(View.VISIBLE);
+            searchView.setVisibility(View.GONE);
             title.setVisibility(View.GONE);
-            anc.setImageResource(R.mipmap.close);
+            anc.setImageResource(R.drawable.ic_close);
             isMultipleDelete = true;
         } else if (isMultipleDelete) {
             delete.setVisibility(View.GONE);
             ly_1.setVisibility(View.VISIBLE);
             title.setVisibility(View.VISIBLE);
-            anc.setImageResource(R.mipmap.box);
+            searchView.setVisibility(View.VISIBLE);
+            anc.setImageResource(R.drawable.ic_note);
             isMultipleDelete = false;
         }
     }
@@ -272,5 +330,20 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
             viewMap.get(_tabs[i]).setBackgroundColor(color);
         }
         viewMap.clear();
+    }
+
+    private List<Note> getNotesFilter(String str) {
+        List<Note> ns = new ArrayList<>();
+        for (Note n : notes) {
+            if (n.getTitle().toLowerCase().contains(str)
+                    || n.getDescription().toLowerCase().contains(str)) {
+                ns.add(n);
+            }
+        }
+        for (Note t :
+                ns) {
+            Log.d("", "" + t.getTitle());
+        }
+        return ns;
     }
 }

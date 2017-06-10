@@ -39,7 +39,7 @@
                 android:layout_marginLeft="@dimen/activity_vertical_margin"
                 android:layout_marginRight="@dimen/activity_vertical_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="8dp">
 
@@ -99,6 +99,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:clickable="true"
+                                android:src="@drawable/ic_event"
                                 app:fabSize="mini"
                                 tools:ignore="KeyboardInaccessibleWidget" />
 
@@ -126,7 +127,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="10dp"
                                 android:clickable="true"
-                                android:src="@mipmap/ic_access_time_white_24dp"
+                                android:src="@drawable/ic_access_time"
                                 app:fabSize="mini"
                                 tools:ignore="KeyboardInaccessibleWidget" />
 

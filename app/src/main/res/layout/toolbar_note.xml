@@ -28,7 +28,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:scaleType="fitXY"
-                android:src="@mipmap/box" />
+                android:src="@drawable/ic_note" />
 
             <cg.rcksoft.utils.font.RobotoTextView
                 style="@style/TextViewAppearance.Title"
@@ -54,7 +54,7 @@
                 android:layout_marginRight="8dp"
                 android:background="@drawable/selector_background_full"
                 android:scaleType="fitXY"
-                android:src="@mipmap/trash"
+                android:src="@drawable/ic_delete"
                 android:visibility="gone" />
 
             <ImageView
@@ -64,7 +64,7 @@
                 android:layout_gravity="right"
                 android:background="@drawable/selector_background_full"
                 android:scaleType="fitXY"
-                android:src="@mipmap/ic_action_accept" />
+                android:src="@drawable/ic_done" />
 
         </LinearLayout>
 
