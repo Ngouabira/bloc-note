@@ -21,7 +21,7 @@ public class AppConfig {
      */
     public AppConfig(Context myContex) {
 
-        helper = new DaoMaster.DevOpenHelper(myContex, "notedb-rcksoft", null);
+        helper = new DaoMaster.DevOpenHelper(myContex, "rickenbazolo_notes_db", null);
     }
 
     /**

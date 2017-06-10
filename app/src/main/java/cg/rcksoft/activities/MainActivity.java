@@ -269,6 +269,7 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener 
         for (int i = _tabs.length - 1; i >= 0; i--) {
             noteDao.delete(notes.get(Integer.parseInt(_tabs[i].toString())));
             adapter.deleteItems(Integer.parseInt(_tabs[i].toString()));
+            viewMap.get(_tabs[i]).setBackgroundColor(color);
         }
         viewMap.clear();
     }

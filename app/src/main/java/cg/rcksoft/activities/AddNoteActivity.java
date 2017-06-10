@@ -276,6 +276,9 @@ public class AddNoteActivity extends AppCompatActivity implements
         note.setTitle(edtTitle.getText().toString());
         note.setDescription(edtNote.getText().toString());
         note.setDateEditNote(new Date());
+        note.setHeurAlarm("");
+        note.setDateAlarm("");
+        note.setFlagFavorite("N");
         return note;
     }
 
