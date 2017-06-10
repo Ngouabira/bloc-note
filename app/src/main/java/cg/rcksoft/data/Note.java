@@ -5,6 +5,8 @@ package cg.rcksoft.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Date;
+
 /**
  * Entity mapped to table NOTE.
  */
@@ -25,6 +27,10 @@ public class Note implements Parcelable {
     private String title;
     private String description;
     private java.util.Date dateEditNote;
+    //new properties
+    private String flagFavorite;
+    private String dateAlarm;
+    private String heurAlarm;
 
     public Note() {
     }
@@ -33,11 +39,14 @@ public class Note implements Parcelable {
         this.id = id;
     }
 
-    public Note(Long id, String title, String description, java.util.Date dateEditNote) {
+    public Note(Long id, String title, String description, Date dateEditNote, String flagFavorite, String dateAlarm, String heurAlarm) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.dateEditNote = dateEditNote;
+        this.flagFavorite = flagFavorite;
+        this.dateAlarm = dateAlarm;
+        this.heurAlarm = heurAlarm;
     }
 
     protected Note(Parcel in) {
@@ -87,6 +96,30 @@ public class Note implements Parcelable {
 
     public void setDateEditNote(java.util.Date dateEditNote) {
         this.dateEditNote = dateEditNote;
+    }
+
+    public String getFlagFavorite() {
+        return flagFavorite;
+    }
+
+    public void setFlagFavorite(String flagFavorite) {
+        this.flagFavorite = flagFavorite;
+    }
+
+    public String getDateAlarm() {
+        return dateAlarm;
+    }
+
+    public void setDateAlarm(String dateAlarm) {
+        this.dateAlarm = dateAlarm;
+    }
+
+    public String getHeurAlarm() {
+        return heurAlarm;
+    }
+
+    public void setHeurAlarm(String heurAlarm) {
+        this.heurAlarm = heurAlarm;
     }
 
     @Override
