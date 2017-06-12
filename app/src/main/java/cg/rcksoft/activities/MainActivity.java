@@ -112,6 +112,13 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
         int id = item.getItemId();
         switch (id) {
             case R.id.favor: {
+                if (!delete.isShown()) {
+                    favoriteNotes();
+                } else {
+                    isMultipleDelete = true;
+                    setUpMenu();
+                    notDeleteAll();
+                }
                 break;
             }
             case R.id.setting: {
@@ -192,15 +199,15 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
     }
 
     @Override
-    public void onNoteFavoriteClick(int p, View v) {
+    public void onNoteFavoriteClick(int p, ImageView v) {
         final Note note = notes.get(p);
         if (note.getFlagFavorite().equals("F")) {
-            v.setBackgroundResource(R.drawable.ic_no_favorite);
+            v.setImageResource(R.drawable.ic_start);
             note.setFlagFavorite("N");
             noteDao.updateInTx(note);
             Log.d("onNoteFavoriteClick", "Note: " + note.getFlagFavorite());
         } else {
-            v.setBackgroundResource(R.drawable.ic_favorite);
+            v.setImageResource(R.drawable.ic_start_plain);
             note.setFlagFavorite("F");
             noteDao.updateInTx(note);
             Log.d("onNoteFavoriteClick", "Note: " + note.getFlagFavorite());
@@ -208,7 +215,7 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
     }
 
     @Override
-    public void onNoteFavoriteLongClick(int p, View v) {
+    public void onNoteFavoriteLongClick(int p, ImageView v) {
         final Note note = notes.get(p);
         if (note.getFlagFavorite().equalsIgnoreCase("F")) {
             v.setBackgroundResource(R.drawable.ic_no_favorite);
@@ -230,11 +237,11 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        /*adapter = new NotesAdapter(getApplicationContext(), getNotesFilter(newText.toLowerCase()));
+        adapter = new NotesAdapter(getApplicationContext(), getNotesFilter(newText.toLowerCase()));
         adapter.setListener(this);
 
-        recyclerView.setAdapter(adapter);*/
-        adapter.filterData(getNotesFilter(newText.toLowerCase()));
+        recyclerView.setAdapter(adapter);
+        // adapter.filterData(getNotesFilter(newText.toLowerCase()));
         return true;
     }
 
@@ -247,7 +254,14 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
     @OnClick(R.id.note_ly)
     public void onHomClick(View v) {
         if (title.isShown()) {
-            finish();
+            if (title.getText().toString().equals(getResources().getString(R.string.title3))) {
+                isMultipleDelete = true;
+                adapter.filterData(noteDao.loadAll());
+                setUpMenu();
+                notDeleteAll();
+            } else {
+                finish();
+            }
         } else {
             isMultipleDelete = true;
             setUpMenu();
@@ -305,6 +319,7 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
             delete.setVisibility(View.GONE);
             ly_1.setVisibility(View.VISIBLE);
             title.setVisibility(View.VISIBLE);
+            title.setText(R.string.title);
             searchView.setVisibility(View.VISIBLE);
             anc.setImageResource(R.drawable.ic_note);
             isMultipleDelete = false;
@@ -312,8 +327,10 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
     }
 
     private void notDeleteAll() {
-        for (Integer i : viewMap.keySet()) {
-            (viewMap.get(i)).setBackgroundColor(color);
+        if (viewMap != null) {
+            for (Integer i : viewMap.keySet()) {
+                (viewMap.get(i)).setBackgroundColor(color);
+            }
         }
     }
 
@@ -330,6 +347,19 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
             viewMap.get(_tabs[i]).setBackgroundColor(color);
         }
         viewMap.clear();
+    }
+
+    private void favoriteNotes() {
+        List<Note> favorite = new ArrayList<>();
+        for (Note n : notes) {
+            if (n.getFlagFavorite().equals("F")) {
+                favorite.add(n);
+            }
+        }
+        adapter.filterData(favorite);
+        //Set up Tool bar
+        title.setText(R.string.title3);
+        anc.setImageResource(R.drawable.ic_back_home);
     }
 
     private List<Note> getNotesFilter(String str) {

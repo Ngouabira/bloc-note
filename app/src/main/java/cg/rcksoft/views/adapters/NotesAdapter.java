@@ -3,6 +3,7 @@ package cg.rcksoft.views.adapters;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import cg.rcksoft.data.AppConfig;
 import cg.rcksoft.data.Note;
 import cg.rcksoft.utils.font.RobotoTextView;
 import cg.rcksoft.views.listeners.NoteItemListener;
+
+import static cg.rcksoft.activities.AddNoteActivity.TAG;
 
 /**
  * Created by RICKEN on 21/06/2016.
@@ -52,10 +55,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         h.content.setText((note.getDescription().trim().isEmpty() ? "<Accun contenu>" :
                 (note.getDescription())));
         //Set favorite
-        if (note.equals("F")) {
-            h.favorite.setImageResource(R.drawable.ic_favorite);
+        if (note.getFlagFavorite().equals("F")) {
+            h.favorite.setImageResource(R.drawable.ic_start_plain);
         } else {
-            h.favorite.setImageResource(R.drawable.ic_no_favorite);
+            h.favorite.setImageResource(R.drawable.ic_start);
         }
 
         //Set Alarm
@@ -142,37 +145,70 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             content = (RobotoTextView) itemView.findViewById(R.id.card_content);
             view = (MaterialRippleLayout) itemView.findViewById(R.id.material_ly);
 
-            view.setOnClickListener(this);
-            favorite.setOnClickListener(this);
-            view.setOnLongClickListener(this);
-            favorite.setOnLongClickListener(this);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick view: ");
+                    if (listener != null) {
+                        listener.onNoteItemClick(getAdapterPosition(), v);
+
+                    }
+                }
+            });
+            favorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "onClick favorite: ");
+                    if (listener != null) {
+                        listener.onNoteFavoriteClick(getAdapterPosition(), favorite);
+                    }
+                }
+            });
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener != null) {
+                        listener.onNoteItemLongClick(getAdapterPosition(), v);
+                    }
+                    return true;
+                }
+            });
+            favorite.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener != null) {
+                        listener.onNoteFavoriteLongClick(getAdapterPosition(), favorite);
+                    }
+                    return true;
+                }
+            });
 
         }
 
         @Override
         public void onClick(View v) {
-            int id = v.getId();
+           /* int id = v.getId();
             if (listener != null) {
-                //if (id == R.id.material_ly){
-                listener.onNoteItemClick(getAdapterPosition(), v);
-                //}
-                /*else if (id == R.id.img_favorite){
+                if (v == view) {
+                    listener.onNoteItemClick(getAdapterPosition(), v);
+                }
+                if (v == favorite) {
                     listener.onNoteFavoriteClick(getAdapterPosition(), v);
-                }*/
-            }
+                }
+            }*/
         }
 
         @Override
         public boolean onLongClick(View v) {
-            int id = v.getId();
+            /*int id = v.getId();
             if (listener != null) {
-                //if (id == R.id.material_ly){
-                listener.onNoteItemLongClick(getAdapterPosition(), v);
-                //}
-                /*else if (id == R.id.img_favorite){
+                if (id == R.id.material_ly) {
+                    listener.onNoteItemLongClick(getAdapterPosition(), v);
+                }
+                if (id == R.id.img_favorite) {
                     listener.onNoteFavoriteLongClick(getAdapterPosition(), v);
-                }*/
-            }
+                }
+            }*/
             return true;
         }
 

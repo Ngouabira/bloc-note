@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:src="@drawable/ic_no_alarm"
                 tools:ignore="ContentDescription,RtlHardcoded" />
 
@@ -70,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/img_alarm"
-                android:contentDescription=""
+                android:contentDescription="@string/favor"
                 android:padding="5dp"
                 android:src="@drawable/ic_no_favorite"
                 tools:ignore="ContentDescription,RtlHardcoded" />
