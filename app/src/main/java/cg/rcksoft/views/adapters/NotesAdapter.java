@@ -47,7 +47,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     @Override
     public void onBindViewHolder(NotesViewHolder h, int p) {
-        value++;
+        //value++;
         final Note note = data.get(p);
 
         h.title.setText(note.getTitle().trim().isEmpty() ? "<Pas de titre>" : note.getTitle());
@@ -75,9 +75,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             h.rootView.setCardBackgroundColor(myContext.getResources().getColor(R.color.material_grey_200));
         }
 
-        if (value >= color.length) {
+        /*if (value >= color.length) {
             value = 0;
-        }
+        }*/
 
         //Attach random bar to card
         h.img.setImageResource(color[value]);
