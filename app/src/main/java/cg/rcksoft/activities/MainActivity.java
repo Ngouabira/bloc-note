@@ -370,10 +370,8 @@ public class MainActivity extends AppCompatActivity implements NoteItemListener,
                 ns.add(n);
             }
         }
-        for (Note t :
-                ns) {
-            Log.d("", "" + t.getTitle());
-        }
+        notes.clear();
+        notes.addAll(ns);
         return ns;
     }
 }

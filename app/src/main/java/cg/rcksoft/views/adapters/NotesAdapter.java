@@ -80,7 +80,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         }*/
 
         //Attach random bar to card
-        h.img.setImageResource(color[value]);
+        //h.img.setImageResource(color[value]);
     }
 
     @Deprecated

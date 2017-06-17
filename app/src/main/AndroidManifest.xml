@@ -3,6 +3,9 @@
     package="cg.rcksoft.app" >
 
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/logo"
@@ -24,6 +27,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <service
+            android:name="cg.rcksoft.service.AlarmService"
+            android:enabled="true" />
+        <receiver android:name="cg.rcksoft.service.AlarmReceiver" />
     </application>
 
 </manifest>
